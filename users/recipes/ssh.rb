@@ -9,7 +9,7 @@ users = data_bag("user")
 		shell user_data["shell"]
 	end	
         execute "add pub key" do
-        command "echo #{node['pub_key']} >> ~#{node['ssh_user']}/.ssh/authorized_keys"
-        not_if "grep #{node['pub_key']} ~#{node['ssh_user']}/.ssh/authorized_keys"
+        	command "echo #{node['pub_key']} >> ~#{node['user']}/.ssh/authorized_keys"
+        	not_if "grep #{node['pub_key']} ~#{node['user']}/.ssh/authorized_keys"
 	end
 end
