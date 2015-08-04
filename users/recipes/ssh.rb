@@ -7,6 +7,6 @@ users = data_bag("user")
 		gid user_data["gid"]
 		home user_data["home"]
 		shell user_data["shell"]
-		pub  user_data["authorized_keys"]
+		ssh_keys user_data["ssh_keys"]
 	end
 end
