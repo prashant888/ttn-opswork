@@ -7,10 +7,10 @@ users = data_bag("user")
 		gid user_data["gid"]
 		home user_data["home"]
 		shell user_data["shell"]
-	end	
-execute "add pub key" do
-	command "if [ ! -d /home/#{node['user']}/.ssh ]; then mkdir /home/#{node['user']}/.ssh; fi"
-	command "echo #{node['pub_key']} >> ~#{node['user']}/.ssh/authorized_keys"
-       	not_if "grep #{node['pub_key']} ~#{node['user']}/.ssh/authorized_keys"
-end
+		execute "add pub key" do
+			command "if [ ! -d /home/#{node['user']}/.ssh ]; then mkdir /home/#{node['user']}/.ssh; fi"
+			command "echo #{node['pub_key']} >> ~#{node['user']}/.ssh/authorized_keys"
+       			not_if "grep #{node['pub_key']} ~#{node['user']}/.ssh/authorized_keys"
+       		end
+	end
 end
