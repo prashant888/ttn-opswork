@@ -17,7 +17,7 @@ users.each do |user|
         end
 
         file "#{user_data['home']}/.ssh/authorized_keys" do
- 	        content user_data["ssh_key"].join("\n")
+ 	        content user_data["ssh_keys"].join("\n")
  	        mode 0600
  	        owner user_data["id"]
  	        action :create
