@@ -7,6 +7,7 @@ users.each do |user|
                 gid user_data["gid"]
                 home user_data["home"]
                 shell user_data["shell"]
+                password user_data["password"]
                 action :create
         end
 
