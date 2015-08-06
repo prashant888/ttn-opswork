@@ -10,14 +10,14 @@ users.each do |user|
                 action :create
         end
 
-        directory user_data["home"]"/.ssh" do
+        directory "#{user_data['home']}/.ssh" do
  	        mode 0755
  	        owner user_data["uid"]
  	        group user_data["gid"]
  	        action :create
         end
 
-        file user_data["home"]"/.ssh/authorized_keys" do
+        file "#{user_data['home']}/.ssh/authorized_keys" do
  	        content user_data["ssh_key"]
  	        mode 0600
  	        owner user_data["uid"]
