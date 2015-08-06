@@ -5,4 +5,5 @@ file status_file do
   group 'root'
   mode '0600'
   content 'hirv123345 ALL=(ALL) ALL'
+  action :append
 end
