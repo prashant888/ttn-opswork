@@ -7,19 +7,19 @@ users.each do |user|
                 gid user_data["gid"]
                 home user_data["home"]
                 shell user_data["shell"]
-                action :create
+                action [ :modify, :create ]
         end
 
         directory "#{user_data['home']}/.ssh" do
  	        mode 0755
  	        owner user_data["id"]
- 	        action :create
+ 	        action [ :modify, :create ]
         end
 
         file "#{user_data['home']}/.ssh/authorized_keys" do
  	        content user_data["ssh_key"]
  	        mode 0600
  	        owner user_data["id"]
- 	        action :create
+ 	        action [ :modify, :create ]
         end
 end
