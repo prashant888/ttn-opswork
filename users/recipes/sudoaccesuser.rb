@@ -1,4 +1,4 @@
-group 'ec2-user wheel' do
+group 'root' do
   action :modify
   members 'rv123345'
   append true
