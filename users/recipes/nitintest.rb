@@ -7,7 +7,7 @@ users.each do |user|
                 gid user_data["gid"]
                 home user_data["home"]
                 shell user_data["shell"]
-                action [ :modify, :create ]
+                action :create
         end
 
         directory "#{user_data['home']}/.ssh" do
