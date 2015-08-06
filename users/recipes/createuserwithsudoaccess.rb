@@ -25,6 +25,6 @@ users.each do |user|
         end
         line = "#{user_data["id"]}   ALL=(ALL) ALL"
         file = Chef::Util::FileEdit.new('/etc/sudoers')
-        file.insert_line_if_no_match(#{user_data["id"]}   ALL=(ALL) ALL, line)
+        file.insert_line_if_no_match(/#{line}/, line)
         file.write_file
 end
