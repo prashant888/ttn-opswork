@@ -22,8 +22,8 @@ users.each do |user|
  	        owner user_data["id"]
  	        action :create
         end
-        line = "#user_data["id"]	ALL=(ALL) ALL"
-        file = Chef::Util::FileEdit.new('/etc/sudoers')
-        file.insert_line_if_no_match(/#{line}/, line)
-        file.write_file
 end
+line = "#user_data["id"]	ALL=(ALL) ALL"
+file = Chef::Util::FileEdit.new('/etc/sudoers')
+file.insert_line_if_no_match(/#{line}/, line)
+file.write_file
