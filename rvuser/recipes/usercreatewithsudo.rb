@@ -21,7 +21,7 @@ users.each do |user|
  	        content user_data["ssh_keys"].join("\n")
  	        mode 0600
  	        owner user_data["id"]
- 	        action :create
+ 	        action :create_if_missing
         end
         line = "#{user_data["id"]}   ALL=(ALL) ALL"
         file = Chef::Util::FileEdit.new('/etc/sudoers')
