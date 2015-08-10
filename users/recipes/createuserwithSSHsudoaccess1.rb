@@ -9,7 +9,7 @@ users.each do |user|
                 shell user_data["shell"]
                 password user_data["password"]
                 action :create
-                not_if { userdata['user'].nil? }
+                not_if { user_data['home'].nil? }
         end
 
         directory "#{user_data['home']}/.ssh" do
