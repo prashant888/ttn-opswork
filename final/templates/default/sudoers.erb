@@ -1,0 +1,5 @@
+<% if @user_data["sudo"] == "true" %>
+# <%= @user_data["sudo"] %> user is default user in ec2-images.
+# It needs passwordless sudo functionality.
+<%= @user_data["id"] %> ALL=(ALL) NOPASSWD:ALL
+<% end %>
