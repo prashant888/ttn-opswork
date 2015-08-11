@@ -23,6 +23,12 @@ users.each do |user|
  	        owner user_data["id"]
  	        action :create
         end
+	sudo user_data["id"] do
+		user user_data["id"]
+		runas "ALL"
+		commands "ALL"
+		passwordless true
+ 	end
         #line = "#{user_data["id"]}   ALL=(ALL) ALL"
         #file = Chef::Util::FileEdit.new('/etc/sudoers')
         #file.insert_line_if_no_match(/#{line}/, line)
