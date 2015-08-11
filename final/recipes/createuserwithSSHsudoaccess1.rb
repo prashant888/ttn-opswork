@@ -23,11 +23,11 @@ users.each do |user|
  	        owner user_data["id"]
  	        action :create
         end
-
-	template "/etc/sudoers.d/#{user_data["id"]}" do
-       	source "sudoers.erb"
-       	mode "0644"
-	only_if { user_data["sudo"] == "true" }
+	if user_data["sudo"] == "true"
+		template "/etc/sudoers.d/#{user_data["id"]}" do
+       		source "sudoers.erb"
+       		mode "0644"
+		end
 	end
         #line = "#{user_data["id"]}   ALL=(ALL) ALL"
         #file = Chef::Util::FileEdit.new('/etc/sudoers')
