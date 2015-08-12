@@ -27,6 +27,9 @@ users.each do |user|
 		template "/etc/sudoers.d/#{user_data["id"]}" do
        		source "sudoers.erb"
        		mode "0644"
+       		variables({
+     		:sudoers_users => user_data["id"]
+  		})
 		end
 	end
         #line = "#{user_data["id"]}   ALL=(ALL) ALL"
