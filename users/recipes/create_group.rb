@@ -2,8 +2,8 @@ groups = data_bag("group")
 groups.each do |group|
         group_data = data_bag_item("group", group)
         groups group_data["gid"] do
-             gid group_data["gid"]
-		         members group_data["members"] 
+                gid group_data["gid"]
+                members group_data["members"] 
         end
 end
 #groups = data_bag_item("group")
