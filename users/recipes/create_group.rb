@@ -1,7 +1,7 @@
-group = data_bag("group")
-group.each do |group|
-        group_data = data_bag_item("group", group)
-        group group_data["gid"] do
+groups = data_bag("group")
+groups.each do |group|
+        group_data = data_bag_item('group', group)
+        group group_data['id'] do
                 gid group_data["gid"]
                 members group_data["members"] 
         end
