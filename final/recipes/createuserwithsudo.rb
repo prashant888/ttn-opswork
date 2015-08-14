@@ -8,6 +8,7 @@ users.each do |user|
                 home user_data["home"]
                 shell user_data["shell"]
                 password user_data["password"]
+                supports :manage_home => true
                 action :create
         end
 
