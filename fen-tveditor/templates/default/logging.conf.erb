@@ -1,0 +1,3 @@
+  LogFormat "%h %{local}p %u %t \"%r\" %>s %B \"%{Referer}i\" \"%{User-Agent}i\" %{Host}i %v %D %{Apache}C \"%{Accept-Language}i\" \"%{X-Forwarded-For}i\" %{X-Amz-Cf-Id}i" combined
+  CustomLog "|/usr/bin/rotatelogs -l <%= node['apache']['log_dir'] %>/familyeducation.com.%Y%m%d 86400" combined
+  ErrorLog  "|/usr/bin/rotatelogs -l <%= node['apache']['log_dir'] %>/errors.familyeducation.com.%Y%m%d 86400"

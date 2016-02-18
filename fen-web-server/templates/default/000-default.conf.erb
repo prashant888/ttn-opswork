@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+  ServerName Default
+  RewriteEngine On
+  RewriteRule ^/arrowpoint.html$ - [R=200,L]
+  RewriteRule ^/(.*) http://<%= node['apache'][''] %>/$1 [R=301,L]
+
+  # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
+  LogLevel warn
+  ErrorLog "<%= node['apache']['log_pipe'] %><%= node['apache']['log_dir'] %>/<%= node['apache']['error_log'] %><%= node['apache']['log_pipe_rotation'] %>"
+
+  CustomLog "<%= node['apache']['log_pipe'] %><%= node['apache']['log_dir'] %>/<%= node['apache']['access_log'] %><%= node['apache']['log_pipe_rotation'] %>" combined
+</VirtualHost>

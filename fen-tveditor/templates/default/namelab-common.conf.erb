@@ -1,0 +1,183 @@
+  AddType application/x-httpd-php .php .php3 .xhtml .phtml .html .rss
+  php_value auto_prepend_file "/site/cfg/prepend-fe.php"
+  php_value default_charset "utf-8"
+
+# [4] >>>>>>>> ../../global/docroot-aliases.conf
+# These are the alises you need to function with the common code base
+# on the reference platform when your document root is not /site/html
+
+  Alias /tv /site/html/tv/
+  Alias /applets /site/html/applets
+  Alias /dart /site/html/dart
+  Alias /lesson-plans /site/html/lesson-plans
+
+  Alias /sitemaps/ /site/html/sitemaps/
+  RewriteRule ^/(sitemap[0-9]*\.xml)$ /sitemaps/%{SERVER_NAME}/$1 [PT]
+
+  RewriteRule ^/namelab/ads/(.*) /site/html/famed/ads/$1 [L,QSA]
+  RewriteRule ^/famed/ads/(.*) /site/html/famed/ads/$1 [L,QSA]
+# [4] <<<<<<<< ../../global/docroot-aliases.conf
+
+# [4] >>>>>>>> ../../global/famed-setup.conf
+
+  ErrorDocument 404 /tv/notfound.php
+  ErrorDocument 403 /tv/notfound.php
+
+  RewriteEngine On
+
+  ErrorDocument 200 "OK"
+  RewriteRule ^/searched/(.*)$ - [R=200,L]
+# [4] <<<<<<<< ../../global/famed-setup.conf
+
+
+  RewriteRule /robots.txt /site/html/applets/robots.php [L]
+
+
+# [4] >>>>>>>> ../../global/rewrite-canon.conf
+  RewriteMap lc int:tolower
+
+  # URL FIXUP REDIRECT ROUTINE
+  #
+  # This code uses a single external redirect to correct all detected problems.
+  #
+  # Get the client-requested full URI and full query string
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ (/[^?]*)(\?[^\ ]*)?\ HTTP/
+  RewriteRule .? - [E=myURI:%1,E=myQS:%2]
+
+  # Convert to lowercase unless we're in an exempted directory
+  RewriteCond %{ENV:myURI} !^/(applets|css|images|img|js)/
+  RewriteCond %{ENV:myURI} [A-Z]
+  RewriteRule .* - [E=qRed:yes,E=myURI:${lc:%{ENV:myURI}}]
+
+  # Remove trailing punctutation
+  RewriteCond %{ENV:myURI} ^(.*)[_\-]+$
+  RewriteRule . - [E=qRed:yes,E=myURI:%1]
+
+  # Remove multiple contiguous slashes in URL (up to three instances)
+  RewriteCond %{ENV:myURI} ^(.*)//+(.*)$
+  RewriteRule . - [E=qRed:yes,E=myURI:%1/%2,C]
+  RewriteCond %{ENV:myURI} ^(.*)//+(.*)$
+  RewriteRule . - [E=myURI:%1/%2,C]
+  RewriteCond %{ENV:myURI} ^(.*)//+(.*)$
+  RewriteRule . - [E=myURI:%1/%2]
+
+  # Redirect direct client requests for "<anything>/index.html" to "<anything>/"
+  RewriteCond %{ENV:myURI} ^(/([^/]+/)*)index\.html [NC]
+  RewriteRule . - [E=qRed:yes,E=myURI:%1]
+# [4] <<<<<<<< ../../global/rewrite-canon.conf
+
+
+  # We do not generally use file-type suffixes for lookup pages here
+  RewriteCond %{ENV:myURI} ^/(lists|browse|celebrities|renamer|name|meaning)
+  RewriteCond %{ENV:myURI} ^(/.*)(\.(php[0-9]?|p?html?|shtml|[aj]sp))$
+  RewriteRule .* - [E=qRed:yes,E=myURI:%1]
+
+  # General rules for this site
+  RewriteCond %{ENV:myURI} ^/(name|meaning)/(.+)
+  RewriteRule .* - [E=qRed:yes,E=myURI:/name-meaning/%2]
+
+  RewriteCond %{ENV:myURI} ^/(lists|browse|celebrities)$
+  RewriteRule .* - [E=qRed:yes,E=myURI:/%1/]
+
+  RewriteCond %{ENV:myURI} ^/(lists|browse|celebrities)/([^/]+)$
+  RewriteRule .* - [E=qRed:yes,E=myURI:/%1/%2/]
+
+  RewriteCond %{ENV:myURI} ^/(lists|browse|celebrities)/([^/]+)/([^/]+)/$
+  RewriteRule .* - [E=qRed:yes,E=myURI:/%1/%2/%3]
+
+  RewriteCond %{ENV:myURI} ^/(list)/?$
+  RewriteRule .* - [E=qRed:yes,E=myURI:/%1s/]
+
+  RewriteCond %{ENV:myURI} ^/(namefinder|renamer)/$
+  RewriteRule .* - [E=qRed:yes,E=myURI:/%1]
+
+
+# [4] >>>>>>>> ../../global/rewrite-canon-doit.conf
+  # Check for unsafe characters
+  RewriteCond %{ENV:myURI} [^/A-Za-z0-9._~+%\-]
+  RewriteRule . - [E=qRed:no,R=400]
+
+  # Do the redirect
+  RewriteCond %{ENV:qRed} ^yes$
+  RewriteRule .* http://%{HTTP_HOST}%{ENV:myURI}%{ENV:myQS} [R=301,L]
+  # ##### End URL fixup redirect routine #####
+# [4] <<<<<<<< ../../global/rewrite-canon-doit.conf
+
+
+  RewriteRule ^/name-meaning/(.*) /namedetail.php?n=$1 [PT,QSA]
+  RewriteRule ^/name-meaning?(.*) /namedetail.php?$1 [PT,QSA]
+
+  RewriteRule ^/lists/$ /namelists.php [L,QSA]
+  RewriteRule ^/lists/([^/]+)/$ /namelists.php?f=$1 [L,QSA]
+  RewriteRule ^/lists/([^/]+)/(.*) /namelistdetail.php?n=$2&f=$1 [L,QSA]
+  RewriteRule ^/popular-names/girls/?$ /top100names.php?role=F [L,QSA]
+  RewriteRule ^/popular-names/boys/?$ /top100names.php?role=M [L,QSA]
+  RedirectMatch 301 ^/topnames/girls/?$ /popular-names/girls/
+  RedirectMatch 301 ^/topnames/boys/?$  /popular-names/boys/
+
+  RewriteRule ^/family-names-surnames/meaning-origin$ /namehistory.php [L,QSA]
+
+  RewriteRule ^/browse/$ /nameindex.php [L,QSA]
+  
+  RewriteCond %{SERVER_NAME} baby-names
+  RewriteRule ^/browse/letter/$ /nameindex.php?role=G [L,QSA]
+  RewriteCond %{SERVER_NAME} baby-names
+  RewriteRule ^/browse/origin/$ /nameindex.php?role=G [L,QSA]
+  RewriteCond %{SERVER_NAME} baby-names
+  RewriteRule ^/browse/letter/([a-z])$ /nameindex.php?role=G&letter=$1 [L,QSA]
+  RewriteCond %{SERVER_NAME} baby-names
+  RewriteRule ^/browse/origin/([a-z\s+-]+)$ /nameindex.php?role=G&origin=$1 [L,QSA]
+
+  RewriteCond %{SERVER_NAME} genealogy
+  RewriteRule ^/browse/letter/$ /nameindex.php?role=S [L,QSA]
+  RewriteCond %{SERVER_NAME} genealogy
+  RewriteRule ^/browse/origin/$ /nameindex.php?role=S [L,QSA]
+  RewriteCond %{SERVER_NAME} genealogy
+  RewriteRule ^/browse/letter/([a-z])$ /nameindex.php?role=S&letter=$1 [L,QSA]
+  RewriteCond %{SERVER_NAME} genealogy
+  RewriteRule ^/browse/origin/([a-z\s+-]+)$ /nameindex.php?role=S&origin=$1 [L,QSA]
+
+  RewriteRule ^/celebrities/recent-arrivals/$ /recentarrivals.php [L,QSA]
+  RewriteRule ^/celebrities/([a-z])/([^/]+)$ /famenamedetail.php?id=$2&f=$1 [L,QSA]
+  RewriteRule ^/celebrities/([a-z])/$ /famenames.php?l=$1 [L,QSA]
+  RewriteRule ^/celebrities/$ /famenames.php [L,QSA]
+
+  RewriteRule ^/(renamer)/(g)irls/([0-9a-z+,]+) /$1.php?r=F&attr=$3 [L,QSA]
+  RewriteRule ^/(renamer)/(b)oys/([0-9a-z+,]+) /$1.php?r=M&attr=$3 [L,QSA]
+
+  RewriteRule ^/(namefinder|namefinder_help|nametracker|renamer|savednames|logout|login|register|email)$ /$1.php [L,QSA]
+
+  RewriteRule ^/(celebrities)/([a-z])$ http://%{HTTP_HOST}/$1/$2/ [R=301,L]
+  RewriteRule ^/(celebrities)/([A-Z])/?$ http://%{HTTP_HOST}/$1/${lc:$2}/ [R=301,L]
+
+  RewriteCond %{SERVER_NAME} baby-names
+  RewriteRule ^/(surnames?|origins?|family-?names)$ http://genealogy.familyeducation.com/family-names [R=301,L]
+  RewriteCond %{SERVER_NAME} baby-names
+  RewriteRule ^/(family-?names)/$ http://genealogy.familyeducation.com/family-names [R=301,L]
+  RewriteCond %{SERVER_NAME} baby-names
+  RewriteRule ^/(surnames?|origins?|surname-origin)/(.+) http://genealogy.familyeducation.com/surname-origin/$2 [R=301,L]
+
+  RewriteCond %{SERVER_NAME} genealogy
+  RewriteRule ^/surname-origin/(.*)$ /namedetail.php?n=$1&r=S [PT,QSA]
+  RewriteCond %{SERVER_NAME} genealogy
+  RewriteRule ^/family-names-surnames/meaning-origin/?$ /namehistory.php [L,QSA]
+  RewriteCond %{SERVER_NAME} genealogy
+  RedirectMatch 301 ^/(family-names|namehistory)/?$ /family-names-surnames/meaning-origin
+
+  RewriteRule .*/favicon.ico$ /img/namelab_favicon.ico [PT]
+
+
+# [4] >>>>>>>> ../../global/pdf-tvdb.conf
+  # Handle premium PDFs - all PDF requests must go through this script now
+  RewriteRule ^(/tv/printables/.*\.pdf)$ /tv/applets/print-pay.php?page=$1&%{QUERY_STRING}
+  RewriteRule ^(/tv/printables/.*\.html)$ /tv/applets/print-imghtml.php?page=$1&%{QUERY_STRING}
+  RewriteRule ^(/tv/printables/.*\.gif)$ /tv/applets/print-img.php?page=$1&%{QUERY_STRING}
+  RewriteRule ^(/tv/resources/PDF/.*\.pdf)$ /tv/applets/print-pay.php?page=$1&%{QUERY_STRING}
+
+  # Handle TV database pages
+  RewriteRule ^/page/([0-9]+\.p?html.*)$ /lesson-plans/lesson-$1 [PT]
+  RewriteRule ^/page/inactive/([0-9]+\.p?html.*)$ /lesson-plans/inactive/lesson-$1 [PT]
+
+  # tv directory uses .phtml pages
+  RewriteRule ^/(botr|lesson-plans|tv|lntv)/(.*)\.html /$1/$2.phtml [PT]
+# [4] <<<<<<<< ../../global/pdf-tvdb.conf

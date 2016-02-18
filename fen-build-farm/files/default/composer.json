@@ -1,0 +1,32 @@
+{
+  "name" : "fen/phpqatools",
+  "type" : "library",
+  "description" : "Composer package for PHP QA Tools",
+  "license" : "MIT",
+  "require" : {
+    "mikey179/vfsStream": "1.4.*",
+
+    "pdepend/pdepend" : "~1.1",
+    "sebastian/phpcpd" : "~2.0",
+    "squizlabs/php_codesniffer" : "~2.0",
+    "simplyadmire/composer-plugins" : "@dev",
+    "mayflower/php-codebrowser": "~1.0",
+    "phpdocumentor/phpdocumentor": "~2.8",
+
+    "phpunit/phpunit": "~4.0",
+    "phpunit/php-invoker": "~1.1",
+    "phpunit/dbunit": "~1.2",
+
+    "phploc/phploc": "~2.0",
+    "sebastian/phpcpd": "~2.0",
+
+    "pdepend/pdepend": "~2.0",
+    "phpmd/phpmd": "~2.0",
+
+    "fabpot/php-cs-fixer": "~1.0",
+    "pimple/pimple": "1.0.0",
+    "sensiolabs/security-checker": "~2.0",
+
+    "theseer/phpdox" : "*"
+  }
+}

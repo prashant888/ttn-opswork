@@ -1,0 +1,6 @@
+<VirtualHost *:80>
+  ServerName default
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} !^newsletters.teachervision.com$
+  RewriteRule /.* http://newsletters.teachervision.com/ [R]
+</VirtualHost>

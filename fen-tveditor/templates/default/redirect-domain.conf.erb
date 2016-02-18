@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+  ServerName <%= @params[:name] %>
+<% if @params[:server_aliases] -%>
+  ServerAlias <%= @params[:server_aliases].join " " %>
+<% end -%> 
+  RewriteEngine on
+  RewriteRule <%= @params[:redirect_from] %> <%= @params[:redirect_to] %> [R=<%= @params[:status] %>,L]
+</VirtualHost>

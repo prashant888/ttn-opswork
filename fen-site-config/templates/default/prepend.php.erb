@@ -1,0 +1,21 @@
+<?php
+<% node['fen']['sitevars']['legacy'].each_pair do |key,value| -%>
+$<%= key.upcase %> = '<%= value %>';
+<% end -%>
+
+$libDir = '<%= node['fen']['sitevars']['legacy']['ip_lib_dir'] %>/';
+include_once $libDir . 'vendor/autoload.php';
+include_once $libDir . 'autoload.php';
+
+<% node['fen']['sitevars']['global'].each_pair do |key,value| -%>
+  <% if value.is_a?(Array) -%>
+LocalVars::set('<%= key.upcase %>', array('<%= value.join('\',\'') %>'));  
+  <% else -%>
+LocalVars::set('<%= key.upcase %>', '<%= value %>');
+  <% end -%>
+<% end -%>
+
+if (!empty($_SERVER['HTTP_HOST'])) {
+    include_once $libDir . 'variables.php3';
+}
+unset($libDir);

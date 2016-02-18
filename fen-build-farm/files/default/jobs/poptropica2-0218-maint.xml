@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Build Shell.swf for &lt;a href=&quot;http://svn-branches-poptropica2-0218-maint.dev.poptropica.com/&quot;&gt;poptropica2-0218-maint Web Site&lt;/a&gt;</description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>7</daysToKeep>
+    <numToKeep>35</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.disk__usage.DiskUsageProperty plugin="disk-usage@0.28"/>
+    <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
+      <teamDomain></teamDomain>
+      <token></token>
+      <room></room>
+      <startNotification>false</startNotification>
+      <notifySuccess>true</notifySuccess>
+      <notifyAborted>false</notifyAborted>
+      <notifyNotBuilt>false</notifyNotBuilt>
+      <notifyUnstable>false</notifyUnstable>
+      <notifyFailure>true</notifyFailure>
+      <notifyBackToNormal>true</notifyBackToNormal>
+      <notifyRepeatedFailure>false</notifyRepeatedFailure>
+      <includeTestSummary>false</includeTestSummary>
+      <showCommitList>false</showCommitList>
+      <includeCustomMessage>false</includeCustomMessage>
+      <customMessage></customMessage>
+    </jenkins.plugins.slack.SlackNotifier_-SlackJobProperty>
+    <EnvInjectJobProperty plugin="envinject@1.92.1">
+      <info>
+        <groovyScriptContent>def job = JOB_NAME
+def branch = job.replaceAll(/~.*$/, &quot;&quot;)
+def view = &quot;poptropica/projects/poptropica2/branches/&quot; + branch
+def version = branch.replaceAll(/(^[^-]+-|-[^-]+$)/, &quot;&quot;)
+def core = &quot;poptropicore-&quot; + version
+def major = version[0..1].replaceAll(/^0/, &quot;&quot;)
+def minor = version[2..3].replaceAll(/^0/, &quot;&quot;)
+def release = major + &quot;.&quot; + minor + &quot;.0&quot;
+def env = branch.matches(/.*-maint$/) ? &apos;QA&apos; : &apos;DEV&apos;
+def buildType = branch.matches(/.*-maint$/) ? &apos;release&apos; : &apos;debug&apos;
+def map = [
+  BRANCH: branch,
+  VERSION: version,
+  CORE: core,
+  RELEASE: release, 
+  ENV: env, 
+  VIEW: view,
+  BUILD_TYPE: buildType
+]
+return map</groovyScriptContent>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+      </info>
+      <on>true</on>
+      <keepJenkinsSystemVariables>true</keepJenkinsSystemVariables>
+      <keepBuildVariables>true</keepBuildVariables>
+      <overrideBuildParameters>false</overrideBuildParameters>
+      <contributors/>
+    </EnvInjectJobProperty>
+  </properties>
+  <scm class="hudson.scm.SubversionSCM" plugin="subversion@2.5.4">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>https://vc.fen.com/svn/poptropica/projects/poptropica2/branches/${JOB_NAME}</remote>
+        <credentialsId></credentialsId>
+        <local>.</local>
+        <depthOption>infinity</depthOption>
+        <ignoreExternalsOption>false</ignoreExternalsOption>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <browser class="hudson.scm.browsers.CollabNetSVN">
+      <url>https://fs02.fen.com/viewvc/poptropica/</url>
+    </browser>
+    <excludedRegions></excludedRegions>
+    <includedRegions></includedRegions>
+    <excludedUsers></excludedUsers>
+    <excludedRevprop></excludedRevprop>
+    <excludedCommitMessages></excludedCommitMessages>
+    <workspaceUpdater class="hudson.scm.subversion.UpdateWithCleanUpdater"/>
+    <ignoreDirPropChanges>false</ignoreDirPropChanges>
+    <filterChangelog>false</filterChangelog>
+  </scm>
+  <assignedNode>NJ2_app01</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.SCMTrigger>
+      <spec>H/5 * * * *</spec>
+      <ignorePostCommitHooks>false</ignorePostCommitHooks>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>${CORE}</project>
+      <filter>**/poptropicore.swc</filter>
+      <target>lib</target>
+      <excludes>**/debug/**</excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <flatten>true</flatten>
+      <doNotFingerprintArtifacts>true</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>poptropica-ane</project>
+      <filter>bin/*.ane</filter>
+      <target>lib</target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <flatten>true</flatten>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.tasks.Ant plugin="ant@1.2">
+      <targets>-verbose clean compile-web</targets>
+      <antName>Ant</antName>
+      <properties>AIR_SDK_HOME=${AIR_SDK_HOME}
+svn.info.url=${SVN_URL}
+svn.info.rev=${SVN_REVISION}
+MOBILE_RELEASE=${RELEASE}
+release.environment=${ENV}
+build.type=${BUILD_TYPE}
+native.extensions=*.swc
+project.build.number=${BUILD_NUMBER}
+config.allowOverwrite=true
+config.appVersionNumber=${RELEASE}
+config.kernelVersionNumber=${VERSION}
+config.appBuildInfo=${BUILD_NUMBER} r${SVN_REVISION}
+config.isProductionBuild=false
+config.isDebugBuild=false
+config.iapOn=false
+config.isAdsActive=true
+config.logLevel=50</properties>
+    </hudson.tasks.Ant>
+  </builders>
+  <publishers>
+    <hudson.tasks.Mailer plugin="mailer@1.16">
+      <recipients>dan.franklin@fen.com sarah.lembke@fen.com jeff.faulconer@fen.com billy.belfield@fen.com chris.messner@fen.com bard.mckinley@fen.com karl.debisschop@fen.com</recipients>
+      <dontNotifyEveryUnstableBuild>true</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>true</sendToIndividuals>
+    </hudson.tasks.Mailer>
+    <jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin plugin="publish-over-ssh@1.13">
+      <consolePrefix>SSH: </consolePrefix>
+      <delegate>
+        <publishers>
+          <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+            <configName>fs02 views</configName>
+            <verbose>false</verbose>
+            <transfers>
+              <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                <remoteDirectory>${VIEW}</remoteDirectory>
+                <sourceFiles>bld/release/bin/Shell.swf</sourceFiles>
+                <excludes></excludes>
+                <removePrefix>bld/release</removePrefix>
+                <remoteDirectorySDF>false</remoteDirectorySDF>
+                <flatten>false</flatten>
+                <cleanRemote>false</cleanRemote>
+                <noDefaultExcludes>false</noDefaultExcludes>
+                <makeEmptyDirs>false</makeEmptyDirs>
+                <patternSeparator>[, ]+</patternSeparator>
+                <execCommand></execCommand>
+                <execTimeout>120000</execTimeout>
+                <usePty>false</usePty>
+              </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+            </transfers>
+            <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+            <usePromotionTimestamp>false</usePromotionTimestamp>
+          </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+          <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+            <configName>xpop views</configName>
+            <verbose>false</verbose>
+            <transfers>
+              <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                <remoteDirectory>${VIEW}</remoteDirectory>
+                <sourceFiles>bld/release/bin/Shell.swf</sourceFiles>
+                <excludes></excludes>
+                <removePrefix>bld/release</removePrefix>
+                <remoteDirectorySDF>false</remoteDirectorySDF>
+                <flatten>false</flatten>
+                <cleanRemote>false</cleanRemote>
+                <noDefaultExcludes>false</noDefaultExcludes>
+                <makeEmptyDirs>false</makeEmptyDirs>
+                <patternSeparator>[, ]+</patternSeparator>
+                <execCommand></execCommand>
+                <execTimeout>120000</execTimeout>
+                <usePty>false</usePty>
+              </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+            </transfers>
+            <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+            <usePromotionTimestamp>false</usePromotionTimestamp>
+          </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+        </publishers>
+        <continueOnError>false</continueOnError>
+        <failOnError>false</failOnError>
+        <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+        <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
+      </delegate>
+    </jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin>
+  </publishers>
+  <buildWrappers>
+    <org.jenkinsCi.plugins.projectDescriptionSetter.DescriptionSetterWrapper plugin="project-description-setter@1.1">
+      <charset>UTF-8</charset>
+      <projectDescriptionFilename>jenkins-description.txt</projectDescriptionFilename>
+      <disableTokens>false</disableTokens>
+    </org.jenkinsCi.plugins.projectDescriptionSetter.DescriptionSetterWrapper>
+  </buildWrappers>
+</project>

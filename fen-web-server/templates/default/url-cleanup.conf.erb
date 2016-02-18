@@ -1,0 +1,53 @@
+RewriteMap lc int:tolower
+
+# URL FIXUP REDIRECT ROUTINE
+#
+# This code uses a single external redirect to correct all detected problems.
+#
+# Get the client-requested full URI and full query string
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ (/[^?]*)(\?[^\ ]*)?\ HTTP/
+RewriteRule .? - [E=myURI:%1,E=myQS:%2]
+
+# Convert to lowercase unless we're in an exempted directory
+RewriteCond %{ENV:myURI} !^/(applets|css|images|img|js)/
+RewriteCond %{ENV:myURI} [A-Z]
+RewriteRule .* - [E=qRed:yes,E=myURI:${lc:%{ENV:myURI}}]
+
+# Remove trailing punctutation
+RewriteCond %{ENV:myURI} ^(.*)[_\-]+$
+RewriteRule . - [E=qRed:yes,E=myURI:%1]
+
+# Remove multiple contiguous slashes in URL (up to three instances)
+RewriteCond %{ENV:myURI} ^(.*)//+(.*)$
+RewriteRule . - [E=qRed:yes,E=myURI:%1/%2,C]
+RewriteCond %{ENV:myURI} ^(.*)//+(.*)$
+RewriteRule . - [E=myURI:%1/%2,C]
+RewriteCond %{ENV:myURI} ^(.*)//+(.*)$
+RewriteRule . - [E=myURI:%1/%2]
+
+# Redirect direct client requests for "<anything>/index.html" to "<anything>/"
+RewriteCond %{ENV:myURI} ^(/([^/]+/)*)index\.html [NC]
+RewriteRule . - [E=qRed:yes,E=myURI:%1]
+
+# Replace plus signs with hyphens
+RewriteCond %{ENV:myURI} ^([^+]*)\.html?$
+RewriteRule . - [E=qRed:yes,E=myURI:%1]
+
+# Replace plus signs with hyphens
+RewriteCond %{ENV:myURI} ^([^+]*)[+]+(.*)$
+RewriteRule . - [E=qRed:yes,E=myURI:%1-%2]
+
+# Replace spaces with hyphens
+RewriteCond %{ENV:myURI} ^(.*)%20%20%20%20(.*)$ [OR]
+RewriteCond %{ENV:myURI} ^(.*)%20%20%20(.*)$ [OR]
+RewriteCond %{ENV:myURI} ^(.*)%20%20(.*)$ [OR]
+RewriteCond %{ENV:myURI} ^(.*)%20(.*)$
+RewriteRule . - [E=qRed:yes,E=myURI:%1-%2]
+
+# Check for unsafe characters
+RewriteCond %{ENV:myURI} [^/A-Za-z0-9._~+%\-]
+RewriteRule . - [E=qRed:no,R=400]
+
+# Do the redirect
+RewriteCond %{ENV:qRed} ^yes$
+RewriteRule .* http://%{HTTP_HOST}%{ENV:myURI}%{ENV:myQS} [R=301,L]

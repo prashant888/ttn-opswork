@@ -1,0 +1,15 @@
+<VirtualHost *:80>
+  ServerName teachervision.com
+  RewriteEngine on
+  RewriteRule ^/(.*)$ https://www.teachervision.com/$1 [R=301,L,QSA]
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName teachervision.com
+  RewriteEngine on
+  SSLEngine on
+  SSLCertificateFile <%= node['fen-ssl']['ssl_dir'] %>/certs/star.teachervision.com.crt
+  SSLCertificateKeyFile <%= node['fen-ssl']['ssl_dir'] %>/private/star.teachervision.com.key
+  SSLCertificateChainFile <%= node['fen-ssl']['ssl_dir'] %>/certs/gd_bundle-g2-g1.crt
+  RewriteRule ^/(.*)$ https://www.teachervision.com/$1 [R=301,L,QSA]
+</VirtualHost>

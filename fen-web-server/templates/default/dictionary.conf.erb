@@ -1,0 +1,89 @@
+<VirtualHost *:80>
+  ServerName <%= @params[:server_name] %>
+  <% if @params[:server_aliases] -%>
+  ServerAlias <%= @params[:server_aliases].join " " %>
+  <% end -%>
+  UseCanonicalName on
+
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Require all granted
+  </Directory>
+
+  AddType application/x-httpd-php .php .php3 .xhtml .phtml .html .rss
+  php_value auto_prepend_file "/site/cfg/prepend-refsites.php"
+  php_value default_charset "utf-8"
+
+  LogFormat "%h %{local}p %u %t \"%r\" %>s %B \"%{Referer}i\" \"%{User-Agent}i\" %{Host}i %v %D %{Apache}C \"%{Accept-Language}i\" \"%{X-Forwarded-For}i\" %{X-Amz-Cf-Id}i" combined
+  CustomLog "|/usr/bin/rotatelogs -l <%= node['apache']['log_dir'] %>/<%= @params[:sitegroup] %>.com.%Y%m%d 86400" combined
+
+  RewriteEngine On
+
+  RewriteRule .? - [E=TLD:<%= @params[:sitegroup] %>.com]
+  RewriteCond %{HTTP_HOST} ^(zip|dev|cert|vli[0-9][0-9]|d[0-9]|sterno|enthalpy)\.
+  RewriteRule .? - [E=SERVER:%1.]
+
+  RewriteRule ^/(css|images|img|js)/(.*) http://i.infopls.com/$1/$2 [R=301,L]
+
+  SetEnvIfNoCase Host "(dictionary)\.(<%= @params[:sitegroup] %>.com)$" VARIANT=$1 TLD=$2 TEMPLATE_DIR=www.$2
+  SetEnvIfNoCase Host "^([^.]*\.)%{VARIANT}\.<%= @params[:sitegroup] %>.com$" SERVER=$1
+  SetEnvIfNoCase Host "^zip\." TEMPLATE_DIR=zip.<%= @params[:sitegroup] %>.com
+
+  RewriteRule ^/(index\.html?)?$ /main/dictionary.html [L]
+
+# [3] >>>>>> ../../global/dictionary-rewrites.conf
+#dictionary word lookup by query string
+RewriteCond %{QUERY_STRING} in=(dictionary|word)
+RewriteCond %{QUERY_STRING} (q|word|query)=([^&]+)
+RewriteRule ^(.*) http://%{HTTP_HOST}/%2? [R=301,L]
+
+#dictionary word lookup by query string
+RewriteCond %{REQUEST_URI} ^/(dictionary|word)/?$
+RewriteCond %{QUERY_STRING} (q|word|query)=([^&]+)
+RewriteRule ^(.*) http://%{HTTP_HOST}/%2? [R=301,L]
+
+RewriteRule ^/(sitemap|definitions-.+).html /dictionary/$1.html [L]
+RewriteRule ^/pronkey.html /main/pronkey.html [L]
+RewriteRule ^/(ads)/(.*) /site/html/$1/$2 [L]
+RewriteRule /robots.txt /site/html/applets/robots.php [L]
+
+#dictionary word lookup by query string
+RewriteCond %{REQUEST_URI} ^/([-a-z-]+)-0([0-9])/?$
+RewriteRule ^(.*) http://%{HTTP_HOST}/%1-%2 [R=301,L]
+
+# If there is a second / send it to www
+RewriteRule ^/(pages)/(.*) http://%{ENV:SERVER}www.%{ENV:TLD}/$1/$2 [R=301,L]
+
+
+# [4] >>>>>>>> ../../global/sitemaps.conf
+# XML Site map is in /thesaurus.<%= @params[:sitegroup] %>.com/
+RewriteCond %{ENV:VARIANT} ^(thesaurus)$
+RewriteRule ^/(sitemap[0-9a-z]?\.xml)$ /sitemaps/%1.%{ENV:TLD}/$1 [L]
+
+# Sitemap rewrite rule
+RewriteRule ^/(sitemap[0-9]*\.xml)$ /site/html/sitemaps/%{SERVER_NAME}/$1 [L]
+# [4] <<<<<<<< ../../global/sitemaps.conf
+
+  Include url-cleanup.conf
+
+# If it refers to a file, show it
+RewriteCond /site/html/dictionary%{REQUEST_URI}.html -f
+RewriteRule ^/(.+)$ /dictionary/$1.html [L]
+
+# Dictionary word lookup by path
+RewriteRule ^/(dictionary|word)/([^/]+)(.html)$ http://%{ENV:SERVER}dictionary.%{ENV:TLD}/$2 [R=301,L]
+RewriteRule ^/(dictionary|word)/([^/]+)$ http://%{ENV:SERVER}dictionary.%{ENV:TLD}/$2 [R=301,L]
+
+# If it's not a file or common URL, look it up
+RewriteCond %{REQUEST_URI} !\.(p?html|php|rss|xml|css|png|gif)$
+RewriteCond %{REQUEST_URI} !^/(ads)/
+RewriteRule ^/(.+)$ /applets/id.php3?word=$1 [L]
+
+# All the rest get redirected to www
+RewriteCond %{REQUEST_URI} !^/(css|img|images|js|email|action)/
+RewriteCond %{REQUEST_URI} !^/(action-newemail|emailpage).php
+RewriteRule ^/(.*) http://%{ENV:SERVER}www.%{ENV:TLD}/$2 [R=301,L]
+# [3] <<<<<< ../../global/dictionary-rewrites.conf
+
+</VirtualHost>

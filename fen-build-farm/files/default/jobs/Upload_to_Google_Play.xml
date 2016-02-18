@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.disk__usage.DiskUsageProperty plugin="disk-usage@0.25"/>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <jenkins.triggers.ReverseBuildTrigger>
+      <spec></spec>
+      <upstreamProjects>TestFlight_PRD</upstreamProjects>
+      <threshold>
+        <name>UNSTABLE</name>
+        <ordinal>1</ordinal>
+        <color>YELLOW</color>
+        <completeBuild>true</completeBuild>
+      </threshold>
+    </jenkins.triggers.ReverseBuildTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35.2">
+      <project>TestFlight_PRD</project>
+      <filter>bld/*/bin/Android*.apk</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.TriggeredBuildSelector">
+        <upstreamFilterStrategy>UseGlobalSetting</upstreamFilterStrategy>
+      </selector>
+      <flatten>true</flatten>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+  </builders>
+  <publishers>
+    <org.jenkinsci.plugins.googleplayandroidpublisher.ApkPublisher plugin="google-play-android-publisher@1.4">
+      <googleCredentialsId>FEN Poptropica</googleCredentialsId>
+      <apkFilesPattern>Android*.apk</apkFilesPattern>
+      <expansionFilesPattern></expansionFilesPattern>
+      <usePreviousExpansionFilesIfMissing>false</usePreviousExpansionFilesIfMissing>
+      <trackName>Beta</trackName>
+      <rolloutPercentage></rolloutPercentage>
+    </org.jenkinsci.plugins.googleplayandroidpublisher.ApkPublisher>
+  </publishers>
+  <buildWrappers/>
+</project>

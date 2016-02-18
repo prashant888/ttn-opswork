@@ -1,0 +1,1 @@
+node.override['ntp']['servers'] = node['ntp']['cluster']

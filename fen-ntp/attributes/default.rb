@@ -1,0 +1,1 @@
+node.default['ntp']['cluster'] = ['jenkins.fen.com']

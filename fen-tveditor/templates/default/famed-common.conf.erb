@@ -1,0 +1,135 @@
+# Common config for all familyeducation.com cobrands
+
+AddType application/x-httpd-php .php .php3 .xhtml .phtml .html .rss
+php_value auto_prepend_file "/site/cfg/prepend-fe.php"
+php_value default_charset "utf-8"
+
+ErrorDocument 404 /tv/notfound.php
+ErrorDocument 403 /tv/notfound.php
+
+# Movies
+RewriteRule ^/(movies)(.html)?$ http://%{HTTP_HOST}/$1/ [R=301,L]
+RewriteRule ^/(movies)/(index.html)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+RewriteRule ^/(movies)/$ /applets/$1.php [L]
+RewriteRule ^/(movies)/(.*)/([0-9]{2,7})$ /applets/$1.php?id=$3 [L]
+RewriteRule ^/(movies)/([0-9]{2,7})$ /applets/$1.php?id=$2 [L]
+RewriteRule ^/(movies)/([^/]+)$ /applets/$1.php?fl=$2 [L]
+
+# Colleges
+RewriteCond  %{HTTP_HOST}  familyeducation.com
+RewriteCond  %{HTTP_HOST}  !school.familyeducation.com
+RewriteRule ^(/edu/colleges/.*) / [R=301,L]
+
+RewriteRule ^/edu/colleges/([A-Za-z][A-Za-z])(/|\.html)?$ / [R=301,L]
+RewriteRule ^/edu/colleges/([0-9]+)(/|\.html)?$ / [R=301,L]
+RewriteRule ^/edu/colleges/([0-9]+)/([a-zA-Z]+)\.html / [R=301,L]
+
+# TV/HS/FE store handling
+RewriteRule ^/store/(sku|isbn)/([0-9][0-9X]*)/(info|buy|cover|cover_s).(html|gif|jpg)$ /tv/store.php?code=$1&sku=$2&type=$3&%{QUERY_STRING}
+
+# Recalls
+RewriteRule ^/(recalls)(.html)?$ http://%{HTTP_HOST}/$1/ [R=301,L]
+RewriteRule ^/(recalls)/(index.html)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+RewriteRule ^/(recalls)/$ /applets/$1.php [L,QSA]
+RewriteRule ^/(recalls)/([0-9]{5}|all)$ /applets/$1.php?show=$2 [L,QSA]
+#RewriteRule ^/(recalls)/([^/]+)$ /applets/$1.php?op=$2 [L,QSA]
+
+RewriteCond  %{HTTP_HOST}  familyeducation.com
+RewriteCond  %{HTTP_HOST}  !life.familyeducation.com
+RewriteRule ^(/recalls/.*) http://life.familyeducation.com$1 [R=301,L]
+
+#RewriteRule ^/recalls/([0-9]+)(/|\.html)?$ /recalls/index.html?show=$1 [L,QSA]
+
+# This rewrite rule is to allow each email-page to make a log entry
+# like /emailed/tv/features/index.html
+RewriteRule ^/emailed/(.*)$ /tv/email-page/dummy.html
+
+# This rewrite rule is for logging searches with number of results
+ErrorDocument 200 "OK"
+RewriteRule ^/searched/(.*)$ - [R=200,L]
+# These allow us to have search links without query strings, so search engines
+# will follow them.
+RewriteRule ^/tv/tvsearch/(.*) /tv/tvsearch.php?$1 [PT]
+RewriteRule /tv/theme/(.*)    /tv/theme.php?theme=$1 [PT]
+RewriteRule ^/search/results/(.*) /famed/fesearch.php?$1 [PT,QSA]
+
+# leving.fen.com - replace with a new system
+RewriteRule ^/offsite/(.*)/  /tv/leavingfen.php?urlid=$1 [PT]
+RewriteRule ^/offsite/(.*)  /tv/leavingfen.php?urlid=$1 [PT]
+
+# sitemap
+RewriteRule ^/sitemap/ /famed/sitemap.html [PT]
+
+# Most files found in /site/html/famed
+RewriteRule ^(/famed/.*) $1 [skip=1,PT]
+RewriteRule ^/([^/]+\.html)$ /famed/$1 [PT]
+RewriteRule ^.*/favicon.ico$ /famed/favicon.ico [PT]
+AliasMatch ^/(apple-touch-icon-[0-9x]+)-precomposed[.](png)$ /site/images/fe/mobile/$1.$2
+AliasMatch ^/(apple-touch-icon[^.]*[.]png)$ /site/images/fe/mobile/$1
+
+# Handle premium PDFs - all PDF requests must go through this script now
+RewriteRule ^(/tv/printables/.*\.pdf)$ /tv/applets/print-pay.php?page=$1&%{QUERY_STRING}
+RewriteRule ^(/tv/printables/.*\.html)$ /tv/applets/print-imghtml.php?page=$1&%{QUERY_STRING}
+RewriteRule ^(/tv/printables/.*\.gif)$ /tv/applets/print-img.php?page=$1&%{QUERY_STRING}
+RewriteRule ^(/tv/resources/PDF/.*\.pdf)$ /tv/applets/print-pay.php?page=$1&%{QUERY_STRING}
+
+# Handle TV database pages
+RewriteRule ^/page/([0-9]+\.p?html.*)$ /lesson-plans/lesson-$1
+RewriteRule ^/page/inactive/([0-9]+\.p?html.*)$ /lesson-plans/inactive/lesson-$1
+
+# Friendly URLs are handled by notfound.php, but try to short-circuit that path
+# in most cases by rewriting conditionally if the file exists.
+
+RewriteCond %{REQUEST_URI} !^/(tv|go)/
+RewriteCond /site/html/lesson-plans/lesson-$1.html -f
+RewriteRule ^/(?:[-a-zA-Z0-9._,]+/)+([1-9][0-9]*)\.html$ /site/html/lesson-plans/lesson-$1.html [L]
+
+# homework relief center - redirect
+RewriteRule ^/hrc/?$  http://%{HTTP_HOST}/page/34550.html [R=301,L]
+
+
+# Entertainment Center popup friendly URLs
+RewriteRule ^/entertainment/child-online-games/(\d+).html /famed/fec/games/$1.html [PT]
+
+# Activities Center friendly URL
+RewriteRule ^/activities-center/toddlers-preschoolers-K12children/?$ /site/html/lesson-plans/lesson-54178.html [L]
+
+# Toy finder friendly URL
+RewriteRule ^/toy-finder-gift-guide/?$ /site/html/lesson-plans/lesson-64359.html [L]
+
+# book finder friendly URL
+RewriteRule ^/book-finder/?$ /site/html/lesson-plans/lesson-75014.html [L]
+
+# snack finder page friendly URL
+RewriteRule ^/healthy-snack-finder/?$ /site/html/lesson-plans/lesson-54835.html [L]
+
+# motherstyles tool
+RewriteRule ^/motherstyles/(.*) /famed/motherstyles/$1 [PT]
+RewriteRule ^/motherstyles(.*) /famed/motherstyles/$1 [PT]
+
+# Where IP licenses content, we must be careful it does not show up outside infoplease.com
+RewriteCond %{HTTP_HOST} !\.infoplease\.com$
+RewriteCond %{REQUEST_URI} !^/[-A-Za-z0-9.]+/[0-9]+.html$
+RewriteCond %{REQUEST_URI} !^/[-A-Za-z0-9.]+/[-A-Za-z0-9.]+/[0-9]+.html$
+RewriteRule ^/(atlas|biography|ipd|ipsa|ce6|bio|country|daily|dictionary|encyclopedia|ipa|ipd|ipea|ipka|ipkd|ipsa|kids|main|news|rhc|spot|t|thesaurus|timelines|toptens|trivia|word|xwords|year)/(.*) http://www.infoplease.com/$1/$2 [R=301,L]
+
+# We are moving 301s to 410s
+RewriteCond %{HTTP_HOST} !\.infoplease\.com$
+RewriteCond %{REQUEST_URI} !^/[-A-Za-z0-9.]+/[0-9]+.html$
+RewriteCond %{REQUEST_URI} !^/[-A-Za-z0-9.]+/[-A-Za-z0-9.]+/[0-9]+.html$
+RewriteRule ^/(askeds|astrology|finance|ihealth|press|rss)/(.*) http://www.infoplease.com/$1/$2 [R=410,L]
+
+AliasMatch  ^/([^/]*)\.php3$ /site/html/applets/$1.php3
+AliasMatch  ^/([^/]*)\.php$  /site/html/applets/$1.php
+
+RewriteRule /robots.txt /site/html/applets/robots.php [L]
+Alias /1x1.gif /site/html/applets/pixel.php
+
+# Allow /site/html/famed to be a symlink
+<Directory /site>
+Options +FollowSymLinks
+</Directory>
+
+<Directory /site/html>
+Options +FollowSymLinks
+</Directory>

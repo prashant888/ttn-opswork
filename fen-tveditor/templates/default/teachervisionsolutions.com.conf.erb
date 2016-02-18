@@ -1,0 +1,11 @@
+<VirtualHost *:80>
+  ServerName www.teachervisionsolutions.com
+  ServerAlias teachervisionsolutions.com d1.teachervisionsolutions.com \
+  d1.www.teachervisionsolutions.com \
+  dev.teachervisionsolutions.com dev.www.teachervisionsolutions.com
+
+  RewriteEngine on
+
+  RewriteRule ^/(.*) http://www.teachervision.com/ [redirect=permanent,L]
+
+</VirtualHost>

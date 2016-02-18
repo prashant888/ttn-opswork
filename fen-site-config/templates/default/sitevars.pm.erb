@@ -1,0 +1,57 @@
+package sitevars;
+require Exporter;
+
+our @ISA = qw(Exporter);
+our @EXPORT = qw( $IP_HTML_HOST $IP_IMAGE_HOST $IP_SCRIPT_HOST $IP_SEARCH_HOST $IP_QUERY_HOST $IP_DB_HOST $IP_DBRO_HOST $IP_DB_ID_HOST $IP_DB_TV_HOST $IP_DB_MAPS_HOST $IP_TV_HTML_HOST $IP_CMDB_LIVE_HOST $IP_CMDB_DEV_HOST $IP_FEN_NEWS_LIVE_HOST $IP_FEN_NEWS_DEV_HOST $IP_QUIZLAB_HOST $IP_DB_FB_HOST $IP_DB_FB_TRACK_HOST $IP_FB_DATA_HOST $IP_DB_POP_HOST $IP_DB_POP_TRACK_HOST $IP_POP_MMO_HOST $IP_DB_COMMENTS_HOST);
+
+<% node['fen']['sitevars']['legacy'].each_pair do |key,value| -%>
+$<%= key.upcase %> = '<%= value %>';
+<% end -%>
+
+    my %data = ();
+
+    sub get($)
+    {
+        my($var) = @_;
+        $v = $data{$var};
+        if (ref($v) eq "ARRAY") {
+            return $v->[0];
+        } else {
+            return $v;
+        }
+    }
+
+    sub getAll($)
+    {
+        my($var) = @_;
+        if (!ref($data{$var})) {
+            $v = [ $data{$var} ];
+        } else {
+            $v = $data{$var};
+        }
+        return $v;
+    }
+
+    sub getRandom($)
+    {
+        my($var) = @_;
+        $v = getAll($var);
+        return $v->[int(rand(scalar(@$v)))];
+    }
+
+    sub set($$)
+    {
+        my($var, $val) = @_;
+        $data{$var} = $val;
+        return $data{$var};
+    }
+
+<% node['fen']['sitevars']['global'].each_pair do |key,value| -%>
+  <% if value.is_a?(Array) -%>
+set('<%= key.upcase %>', ['<%= value.join('\',\'') %>']);  
+  <% else -%>
+set('<%= key.upcase %>', '<%= value %>');
+  <% end -%>
+<% end -%>
+
+1;

@@ -1,0 +1,52 @@
+DEPENDENCIES
+  apt
+  authbind
+  elasticsearch
+  fqdn
+  graylog2
+    path: .
+    metadata: true
+  java
+  mongodb
+
+GRAPH
+  7-zip (1.0.2)
+    windows (>= 1.2.2)
+  apt (2.8.2)
+  ark (0.9.0)
+    7-zip (>= 0.0.0)
+    windows (>= 0.0.0)
+  authbind (0.1.10)
+  build-essential (2.2.3)
+  chef_handler (1.2.0)
+  elasticsearch (0.3.14)
+    ark (>= 0.2.4)
+  fqdn (0.3.0)
+    hostsfile (>= 0.0.0)
+    line (>= 0.0.0)
+    now (>= 0.0.0)
+  graylog2 (1.1.6)
+    authbind (>= 0.1.8)
+    elasticsearch (>= 0.0.0)
+    java (>= 0.0.0)
+    mongodb (>= 0.0.0)
+  hostsfile (2.4.5)
+  java (1.35.0)
+  line (0.6.2)
+  mongodb (0.16.2)
+    apt (>= 1.8.2)
+    python (>= 0.0.0)
+    runit (>= 1.5.0)
+    yum (>= 3.0)
+  now (0.3.0)
+  packagecloud (0.1.0)
+  python (1.4.6)
+    build-essential (>= 0.0.0)
+    yum-epel (>= 0.0.0)
+  runit (1.7.2)
+    packagecloud (>= 0.0.0)
+  windows (1.38.1)
+    chef_handler (>= 0.0.0)
+  yum (3.7.1)
+  yum-epel (0.6.2)
+    yum (~> 3.2)

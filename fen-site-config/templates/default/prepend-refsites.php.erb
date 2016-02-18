@@ -1,0 +1,16 @@
+<%= render "prepend.php.erb" %>
+
+<% node['fen']['sitevars']['reference'].each_pair do |key,value| -%>
+  <% if value.is_a?(Array) -%>
+LocalVars::set('<%= key.upcase %>', array('<%= value.join(',') %>'));  
+  <% else -%>
+LocalVars::set('<%= key %>', '<%= value %>');
+  <% end -%>
+<% end -%>
+
+if (php_sapi_name() !== 'cli') {
+    $session = \Teachervision\Container::instance()->getSession();
+    if ($session instanceof \Zend\Session\Container) {
+        $access = \Teachervision\Access::instance($session);
+    }
+}

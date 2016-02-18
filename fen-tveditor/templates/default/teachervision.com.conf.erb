@@ -1,0 +1,111 @@
+<VirtualHost *:<%= @params[:server_port] %>>
+    ServerName <%= @params[:server_name] %>
+    <% if @params[:server_aliases] -%>
+    ServerAlias <%= @params[:server_aliases].join " " %>
+    <% end -%> 
+  
+    UseCanonicalName on
+  
+    SetEnvIf Host ^stage TEMPLATE_DIR=stage/www.teachervision.com
+    SetEnvIf Host ^redesign TEMPLATE_DIR=redesign.teachervision.com
+    SetEnvIf Host ^ TEMPLATE_DIR=<%= @params[:server_name] %>
+
+    CookieTracking on
+    <% if @params[:server_port] == 443 -%>
+    SSLEngine on
+    SSLCertificateFile <%= node['fen-ssl']['ssl_dir'] %>/certs/star.teachervision.com.crt
+    SSLCertificateKeyFile <%= node['fen-ssl']['ssl_dir'] %>/private/star.teachervision.com.key
+    SSLCertificateChainFile <%= node['fen-ssl']['ssl_dir'] %>/certs/gd_bundle-g2-g1.crt
+    <% end -%> 
+
+    LogFormat "%h %{local}p %u %t \"%r\" %>s %B \"%{Referer}i\" \"%{User-Agent}i\" %{Host}i %v %D %{Apache}C \"%{Accept-Language}i\" \"%{X-Forwarded-For}i\" %{X-Amz-Cf-Id}i" combined
+    CustomLog "|/usr/bin/rotatelogs -l <%= node['apache']['log_dir'] %>/teachervision.com.%Y%m%d 86400" combined
+    #ErrorLog "|/usr/bin/rotatelogs -l <%= node['apache']['log_dir'] %>/teachervision.com.errors.%Y%m%d"
+
+    <LocationMatch "^/(css|images|js)/">
+        php_flag engine off
+    </LocationMatch>
+
+    AddType application/x-httpd-php .php .php3 .xhtml .phtml .html .rss
+    php_value auto_prepend_file "/site/cfg/prepend-tv.php"
+    php_value default_charset "utf-8"
+
+    DocumentRoot <%= @params[:docroot] %>
+    <Directory <%= @params[:docroot] %>>
+        Options FollowSymLinks
+        Require all granted
+    </Directory>
+
+    ErrorDocument 404 /tv/notfound.php
+    ErrorDocument 403 /tv/notfound.php
+    ErrorDocument 410 /tv/404.html
+    
+    DirectoryIndex index.php index.php3 index.xhtml index.html index.phtml index.htm
+    
+    AddType image/vnd.microsoft.icon .ico
+
+    Alias /1x1.gif <%= @params[:docroot] %>/applets/pixel.php
+    Alias /images/ /site/images/
+    
+    
+    # /tv/private contains the summary spreadsheets
+    AliasMatch ^/tv/private/(.*) /site/cache/tv/summary/$1
+    
+    <Directory /site/cache/tv/summary>
+        Options Indexes
+<% if node['apache']['version'] == '2.2' -%>
+        order deny,allow
+        deny from all
+        Allow from 10.0.0.0/16
+        <%= render "global-partners.erb" %>
+<% elsif node['apache']['version'] == '2.4' -%>
+        AuthMerging Off
+        Require ip 10.0 81.33.28.214 52.5.68.125
+<% end -%>
+    </Directory>
+
+    # /tv/forms/private contains admin support for contest forms, etc. plus the "baby page"
+    <Location /tv/forms/private/>
+        Options Indexes
+<% if node['apache']['version'] == '2.2' -%>
+        order deny,allow
+        deny from all
+        Allow from 10.0.0.0/16
+        <%= render "global-partners.erb" %>
+<% elsif node['apache']['version'] == '2.4' -%>
+        AuthMerging Off
+        Require ip 10.0 81.33.28.214 52.5.68.125
+<% end -%>
+    </Location>
+
+<%= render "rewrites.erb" %>
+
+</VirtualHost>
+
+<VirtualHost *:<%= @params[:redirect_port] %>>
+    ServerName <%= @params[:server_name] %>
+    <% if @params[:server_aliases] -%>
+    ServerAlias <%= @params[:server_aliases].join " " %>
+    <% end -%>
+
+    UseCanonicalName on
+
+    <% if @params[:redirect_port] == 443 -%>
+    SSLEngine on
+    SSLCertificateFile <%= node['fen-ssl']['ssl_dir'] %>/certs/star.teachervision.com.crt
+    SSLCertificateKeyFile <%= node['fen-ssl']['ssl_dir'] %>/private/star.teachervision.com.key
+    SSLCertificateChainFile <%= node['fen-ssl']['ssl_dir'] %>/certs/gd_bundle-g2-g1.crt
+    <% end -%> 
+
+    RewriteEngine on
+    RewriteOptions inherit
+
+    RewriteCond %{HTTPS} on
+    RewriteRule .? - [E=REDIR_SCHEME:http]
+
+    RewriteCond %{HTTPS} !on
+    RewriteRule .? - [E=REDIR_SCHEME:https]
+
+    RewriteRule ^/(.*) %{ENV:REDIR_SCHEME}://%{HTTP_HOST}/$1 [R=301,L,QSA]
+</VirtualHost>
+    
