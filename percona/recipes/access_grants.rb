@@ -30,5 +30,5 @@ end
 chef_gem "chef-rewind"
 require 'chef/rewind'
 rewind "execute[mysql-install-privileges]" do
-  command "mysql -p'" + passwords.root_password + "' -e '' &> /dev/null > /dev/null &> /dev/null ; if [ $? -eq 0 ] ; then /usr/bin/mysql -p'" + passwords.root_password + "' < /etc/mysql/grants.sql ; else /usr/bin/mysql < /etc/mysql/grants.sql ; fi ;"
+  command "sudo -i mysql -p'" + passwords.root_password + "' -e '' &> /dev/null > /dev/null &> /dev/null ; if [ $? -eq 0 ] ; then sudo -i /usr/bin/mysql -p'" + passwords.root_password + "' < /etc/mysql/grants.sql ; else sudo -i /usr/bin/mysql < /etc/mysql/grants.sql ; fi ;"
 end
