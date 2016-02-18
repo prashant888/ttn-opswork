@@ -1,0 +1,25 @@
+name             'fen-base-server'
+maintainer       'Erich Beyrent'
+maintainer_email 'erich.beyrent@fen.com'
+license          'All rights reserved'
+description      'Installs/Configures fen-base-server'
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version          '0.1.0'
+
+supports 'ubuntu'
+
+recipe 'fen-base-server', 'Provides base package installation for every FEN server'
+recipe 'fen-base-server::aws', 'Provides base package installation for every AWS instance'
+recipe 'fen-base-server::aws-site', 'Provides base package installation for AWS instances that mount nfs1'
+recipe 'fen-base-server::local', 'Provides base package installation for local development instances'
+
+depends 'apt'
+depends 'build-essential'
+depends 'hostname'
+depends 'ntp'
+depends 'nfs'
+depends 'rsyslog'
+depends 'snmp'
+depends 'zabbix-agent'
+depends 'fen-s3cmd'
+depends 'fen-aws'

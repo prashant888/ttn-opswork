@@ -1,0 +1,1 @@
+/mnt/staging -fstype=nfs4,ro nfs1.fen.com:/srv/nfs/staging
