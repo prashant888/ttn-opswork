@@ -1,1 +1,0 @@
-default[:fen_base_server][:domain] = 'fen'

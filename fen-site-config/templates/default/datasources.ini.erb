@@ -1,9 +1,0 @@
-<% %w(biobase botr chemgloss events feature geobase id movies names partner poll recalls regdb rss scores status sudoku syndb tv tvusers).each do |db| -%>
-[<%= db %>]
-dsn.dbms = pgsql
-dsn.host = <%= node['fen']['sitevars']['global']['DB_HOST'] %>
-dsn.dbname = <%= db %>
-user = webadmin
-password = www
-
-<% end -%>
