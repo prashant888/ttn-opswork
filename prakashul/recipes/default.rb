@@ -16,7 +16,7 @@ end
 
 cookbook_file 'default1' do
   path '/etc/nginx/sites-available/prakashul-default'
-  action :create_if_missing
+  action :create
 end
   	
 service 'tomcat7' do
