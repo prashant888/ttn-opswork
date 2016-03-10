@@ -14,7 +14,7 @@ package 'tomcat7' do
         action :install
 end
   	
-cookbook_file '/etc/nginx/sites-available/default-prakashul' do
+cookbook_file '/etc/nginx/default-prakashul' do
   source 'default'
   mode '0644'
   action :create
