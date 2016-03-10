@@ -15,9 +15,10 @@ package 'tomcat7' do
 end
 
 
-cookbook_file "/etc/nginx/sites-enabled/default" do
+cookbook_file "/etc/nginx/sites-available/default" do
   source "default"
   mode "0644"
+  manage_symlink_source :"true"
   notifies :reload, "service[nginx]"
   notifies :restart, "service[tomcat7]"
 
