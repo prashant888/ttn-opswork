@@ -13,6 +13,11 @@ end
 package 'tomcat7' do
         action :install
 end
+
+cookbook_file 'default1' do
+  path '/etc/nginx/sites-available/prakashul-default'
+  action :create_if_missing
+end
   	
 service 'tomcat7' do
   supports :restart => true
