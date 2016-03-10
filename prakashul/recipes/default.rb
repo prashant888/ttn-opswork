@@ -15,12 +15,11 @@ package 'tomcat7' do
 end
   	
 cookbook_file '/etc/nginx/sites-available/default-prakashul' do
-  source 'default1'
+  source 'default'
   mode '0644'
   action :create
   notifies :reload, "service[nginx]"
   notifies :restart, "service[tomcat7]"
-
 end
 
 service 'tomcat7' do
