@@ -13,13 +13,9 @@ end
 package 'tomcat7' do
         action :install
 end
-
-file '/etc/nginx/sites-available/default' do
-  force_unlink :TrueClass
-end
   	
 cookbook_file "/etc/nginx/sites-available/default-prakashul" do
-  source "default"
+  source "default1"
   enable "true"
   mode "0644"
   notifies :reload, "service[nginx]"
