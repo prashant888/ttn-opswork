@@ -19,7 +19,7 @@ cookbook_file "/etc/nginx/sites-enabled/default" do
   source "default"
   mode "0644"
   notifies :reload, "service[nginx]"
-  notifies :restart, "service[tomcat6]"
+  notifies :restart, "service[tomcat7]"
 
 end
 
