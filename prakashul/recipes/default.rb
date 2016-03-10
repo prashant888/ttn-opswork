@@ -14,7 +14,7 @@ package 'tomcat7' do
         action :install
 end
   	
-cookbook_file "/etc/nginx/sites-available/default-prakashul" do
+file '/etc/nginx/sites-available/default-prakashul' do
   source "default1"
   mode "0644"
   notifies :reload, "service[nginx]"
