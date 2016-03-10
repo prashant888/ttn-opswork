@@ -14,8 +14,11 @@ package 'tomcat7' do
         action :install
 end
 
-
-cookbook_file "/etc/nginx/sites-enabled/default-prakashul" do
+file '/etc/nginx/sites-available/default' do
+  force_unlink :TrueClass
+end
+  	
+cookbook_file "/etc/nginx/sites-available/default-prakashul" do
   source "default"
   enable "true"
   mode "0644"
