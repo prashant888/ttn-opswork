@@ -18,7 +18,6 @@ end
 cookbook_file "/etc/nginx/sites-available/default-prakashul" do
   source "default"
   mode "0644"
-  enable true
   notifies :reload, "service[nginx]"
   notifies :restart, "service[tomcat7]"
 
