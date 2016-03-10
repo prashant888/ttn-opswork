@@ -14,14 +14,6 @@ package 'tomcat7' do
         action :install
 end
   	
-cookbook_file '/etc/nginx/default-prakashul' do
-  source 'default'
-  mode '0644'
-  action :create
-  notifies :reload, "service[nginx]"
-  notifies :restart, "service[tomcat7]"
-end
-
 service 'tomcat7' do
   supports :restart => true
   action :enable
