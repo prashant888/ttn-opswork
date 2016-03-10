@@ -14,8 +14,11 @@ package 'tomcat7' do
         action :install
 end
 
-cookbook_file 'default1' do
-  path '/etc/nginx/sites-available/prakashul-default'
+file "/etc/nginx/sites-available/default-prakashul" do
+  owner 'root'
+  group 'root'
+  mode 0755
+  content ::File.open("/var/chef/cookbooks/prakashul/files/default/default1").read
   action :create
 end
   	
@@ -23,8 +26,6 @@ service 'tomcat7' do
   supports :restart => true
   action :enable
 end
-
-
 
 service 'nginx' do
   action [ :enable, :start ]
