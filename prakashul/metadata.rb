@@ -1,7 +1,6 @@
-name             'nginx'
-maintainer       'YOUR_COMPANY_NAME'
-maintainer_email 'YOUR_EMAIL'
+name             'Prakashul'
+maintainer       'TTND'
+maintainer_email ''
 license          'All rights reserved'
-description      'Installs/Configures nginx'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+description      'Installs/Configures nginx and tomcat'
 version          '0.1.0'
