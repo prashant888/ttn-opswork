@@ -17,7 +17,8 @@ all_hosts = {}
 all_hostgroups = {}
 
 # Gets all (online only) instances in OpsWorks stack
-all_instances = search(:node, 'role:*')
+#all_instances = search(:node, 'role:*')
+all_instances = search("aws_opsworks_instance")
 all_instances.each do |instance|
   node_hostgroups = {}
   # add a hostgroup for each layer the instance is in
@@ -33,7 +34,7 @@ all_instances.each do |instance|
   all_hostgroups = all_hostgroups.merge(node_hostgroups)
 end
 
-template '/etc/nagios/conf.d/hostgroups.cfg' do
+template '/etc/nagios3/conf.d/hostgroups.cfg' do
   source 'hostgroups.cfg.erb'
   owner 'nagios'
   group 'nagios'
@@ -45,7 +46,7 @@ template '/etc/nagios/conf.d/hostgroups.cfg' do
   backup 0
 end
 
-template "/etc/nagios/conf.d/hosts.cfg" do
+template "/etc/nagios3/conf.d/hosts.cfg" do
   source 'hosts.cfg.erb'
   owner 'nagios'
   group 'nagios'
