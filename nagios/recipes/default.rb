@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 nodes = search(:node, "*:*")
-dbnodes.each do |node|
+nodes.each do |node|
   Chef::Log.info("#{node["name"]} has IP address #{node["ipaddress"]}")
 end
 
