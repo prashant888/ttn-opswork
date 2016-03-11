@@ -1,9 +1,9 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
 # Cookbook Name:: iis
 # Recipe:: mod_compress_dynamic
 #
-# Copyright 2011, Opscode, Inc.
+# Copyright 2011, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,14 @@
 # limitations under the License.
 #
 
-include_recipe "iis"
+include_recipe 'iis'
 
-webpi_product "DynamicContentCompression" do
-  accept_eula node['iis']['accept_eula']
+if Opscode::IIS::Helper.older_than_windows2008r2?
+  feature = 'Web-Dyn-Compression'
+else
+  feature = 'IIS-HttpCompressionDynamic'
+end
+
+windows_feature feature do
   action :install
 end

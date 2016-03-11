@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: perl
-# Recipe:: default
+# Recipe:: _windows
 #
-# Copyright 2013 Chef
+# Copyright 2013-2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,12 +46,12 @@ remote_file "#{tempdir}\\#{installer}" do
   action :create
   owner 'administrator'
   group 'administrators'
-  mode 0774
+  mode '0774'
 end
 
 execute 'Install StrawberryPerl' do
   command "msiexec /qn /i #{tempdir}\\#{installer} INSTALLDIR=#{node['perl']['install_dir']} PERL_PATH=YES"
-  not_if { File.exists?("#{node['perl']['install_dir']}\\perl\\bin\\perl.exe") }
+  not_if { File.exist?("#{node['perl']['install_dir']}\\perl\\bin\\perl.exe") }
 end
 
 windows_path "#{node['perl']['install_dir']}perl\\bin" do

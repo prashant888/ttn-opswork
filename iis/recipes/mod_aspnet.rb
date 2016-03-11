@@ -1,9 +1,9 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
 # Cookbook Name:: iis
 # Recipe:: mod_aspnet
 #
-# Copyright 2011, Opscode, Inc.
+# Copyright 2011, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,17 @@
 # limitations under the License.
 #
 
-include_recipe "iis"
+include_recipe 'iis'
+include_recipe 'iis::mod_isapi'
 
-webpi_product "ASPNET" do
-  accept_eula node['iis']['accept_eula']
-  action :install
+if Opscode::IIS::Helper.older_than_windows2008r2?
+  features = %w(NET-Framework)
+else
+  features = %w(IIS-NetFxExtensibility IIS-ASPNET)
+end
+
+features.each do |feature|
+  windows_feature feature do
+    action :install
+  end
 end
