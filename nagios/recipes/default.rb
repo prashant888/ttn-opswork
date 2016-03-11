@@ -6,15 +6,9 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-hostname = search("aws_opsworks_instance").each do |hostname| 
+instance = search("aws_opsworks_instance").first do
 Chef::Log.info("********** The instance's hostname is '#{instance['hostname']}'
  **********")
-Chef::Log.info("********** The instance's hostname is '#{instance['hostname']}'
+Chef::Log.info("********** The instance's ID is '#{instance['instance_id']}'
 **********")
-end
-instance = search("aws_opsworks_instance").each do |instance|
- Chef::Log.info("********** The instance's hostname is '#{instance['ec2_instance_id']}'
- **********")
- Chef::Log.info("********** The instance's ID is '#{instance['ec2_instance_id']}'
- **********")
 end
