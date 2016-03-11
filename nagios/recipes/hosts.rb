@@ -18,3 +18,7 @@ node['opsworks']['layers'].each do |layer_id, layer_info|
           :hostgroups => node_hostgroups,
           :private_ip => instance_info['private_ip']
         }
+ end
+    end
+  end
+end
