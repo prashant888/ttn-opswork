@@ -16,25 +16,21 @@
 all_hosts = {}
 all_hostgroups = {}
 
-node['opsworks']['layers'].each do |layer_id, layer_info|
-  all_hostgroups[layer_id] = layer_info['name']
-  layer_info['instances'].each do |instance_name, instance_info|
-    if instance_info['status'] == 'online'
-      node_hostgroups[instance_info['availability_zone']] = instance_info['availability_zone']
-      node_hostgroups[layer_id] = layer_info['name']
-
-      all_hostgroups = all_hostgroups.merge(node_hostgroups)
-      if all_hosts.has_key?(instance_name)
-        # host is in more than one layer - so merge them
-        all_hosts[instance_name][:hostgroups] = all_hosts[instance_name][:hostgroups].merge(node_hostgroups)
-      else
-        all_hosts[instance_name] = {
-          :hostgroups => node_hostgroups,
-          :private_ip => instance_info['private_ip']
-        }
-      end
-    end
+# Gets all (online only) instances in OpsWorks stack
+all_instances = search(:node, 'role:*')
+all_instances.each do |instance|
+  node_hostgroups = {}
+  # add a hostgroup for each layer the instance is in
+  instance['opsworks']['layers'].each do |layer_id, layer_info|
+    node_hostgroups[layer_id] = layer_info['name']
   end
+  # add a hostgroup for each availability zone
+  node_hostgroups[instance['availability_zone']] = instance['availability_zone']
+  all_hosts[instance['hostname']] = {
+      :hostgroups => node_hostgroups,
+      :private_ip => instance['private_ip']
+  }
+  all_hostgroups = all_hostgroups.merge(node_hostgroups)
 end
 
 template '/etc/nagios/conf.d/hostgroups.cfg' do
@@ -60,3 +56,4 @@ template "/etc/nagios/conf.d/hosts.cfg" do
   notifies :reload, 'service[nagios]'
   backup 0
 end
+Status 
