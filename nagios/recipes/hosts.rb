@@ -1,8 +1,7 @@
-
 all_hosts = {}
 all_hostgroups = {}
 
-node['opsworks']['layers'].each do |layer_id, layer_info|
+node['kronos']['layers'].each do |layer_id, layer_info|
   all_hostgroups[layer_id] = layer_info['name']
   layer_info['instances'].each do |instance_name, instance_info|
     if instance_info['status'] == 'online'
@@ -18,7 +17,7 @@ node['opsworks']['layers'].each do |layer_id, layer_info|
           :hostgroups => node_hostgroups,
           :private_ip => instance_info['private_ip']
         }
- end
+      end
     end
   end
 end
