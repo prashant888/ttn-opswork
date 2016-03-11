@@ -2,7 +2,7 @@
 all_hosts = {}
 all_hostgroups = {}
 
-node['Prakashul']['layers'].each do |layer_id, layer_info|
+node['opsworks']['layers'].each do |layer_id, layer_info|
   all_hostgroups[layer_id] = layer_info['name']
   layer_info['instances'].each do |instance_name, instance_info|
     if instance_info['status'] == 'online'
