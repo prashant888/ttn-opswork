@@ -1,4 +1,4 @@
-name              'nagios'
+name              'nagios_prakashul'
 maintainer        'Tim Smith'
 maintainer_email  'tsmith84@gmail.com'
 license           'Apache 2.0'
@@ -7,7 +7,7 @@ long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version           '7.2.6'
 
 recipe 'default', 'Installs Nagios server.'
-recipe 'nagios::pagerduty', 'Integrates contacts w/ PagerDuty API'
+recipe 'nagios_prakashul::pagerduty', 'Integrates contacts w/ PagerDuty API'
 
 depends 'apache2', '>= 2.0'
 depends 'zap', '>= 0.6.0'
