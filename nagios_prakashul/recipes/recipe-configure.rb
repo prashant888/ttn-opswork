@@ -12,11 +12,11 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 #
-
+require 'pp'
 all_hosts = {}
 all_hostgroups = {}
 #node['opsworks']['instance']['layers']
-puts node['opsworks'].inspect
+pp node
 node['opsworks']['layers'].each do |layer_id, layer_info|
   all_hostgroups[layer_id] = layer_info['name']
   layer_info['instances'].each do |instance_name, instance_info|
