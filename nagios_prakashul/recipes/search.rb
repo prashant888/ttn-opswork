@@ -12,11 +12,6 @@ end
 #    node_hostgroups[layer_id] = layer_info['name']
 #  end
 
-
-	all_instances.each do |num|
-    puts num
-end
-
   # add a hostgroup for each layer the instance is in
 end
 
