@@ -21,6 +21,7 @@ all_hostgroups = {}
 all_instances = search(:node, 'role:*')
 all_instances.each do |instance|
   node_hostgroups = {}
+puts instance.inspect
   # add a hostgroup for each layer the instance is in
   instance['opsworks']['layers'].each do |layer_id, layer_info|
     node_hostgroups[layer_id] = layer_info['name']
