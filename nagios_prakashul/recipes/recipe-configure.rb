@@ -19,8 +19,8 @@ all_hostgroups = {}
 pp node
 #node['opsworks']['layers'].each do |layer_id, layer_info|
 
-node['opsworks']['layers'].each do |layer_id, layer_info|
 puts node.['opsworks']['layers']
+node['opsworks']['layers'].each do |layer_id, layer_info|
   all_hostgroups[layer_id] = layer_info['name']
   layer_info['instances'].each do |instance_name, instance_info|
     if instance_info['status'] == 'online'
