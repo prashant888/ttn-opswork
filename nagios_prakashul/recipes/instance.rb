@@ -3,10 +3,37 @@
 # **********")
 #Chef::Log.info("********** The instance's ID is '#{instance['instance_id']}'
 #**********")
-search("aws_opsworks_instance").each do |instance|
-puts "Hostname is : '#{instance['hostname']}'"
+#search("aws_opsworks_instance").each do |instance|
+#puts "Hostname is : '#{instance['hostname']}'"
+#puts "Private Ip  is : '#{instance['private_ip']}'"
+#puts "instance's ID is '#{instance['ec2_instance_id']}'"
+#end
 
-puts "Private Ip  is : '#{instance['private_ip']}'"
- 
- puts "instance's ID is '#{instance['instance_id']}'"
+directory '/etc/nagios3/host.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+directory '/etc/nagios3/hostgroup.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+search("aws_opsworks_instance").each do |instance|
+
+file '/etc/nagios3/host.d/address.cfg' do
+  source 'hosts.cfg.erb'
+  mode '0755'
+  owner 'root'
+  group 'root'
+  action :create
+  variables(
+	   :address => instance['private_ip'],
+	   :name => instance['hostname']
+         )	  
+end
 end
