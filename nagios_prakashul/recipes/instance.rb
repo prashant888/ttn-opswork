@@ -25,7 +25,7 @@ end
 
 search("aws_opsworks_instance").each do |instance|
 
-file '/etc/nagios3/host.d/address.cfg' do
+template '/etc/nagios3/host.d/address.cfg' do
   source 'hosts.cfg.erb'
   mode '0755'
   owner 'root'
