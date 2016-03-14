@@ -30,7 +30,6 @@ template '/etc/nagios3/host.d/address.cfg' do
   mode '0755'
   owner 'root'
   group 'root'
-  action :create
   variables(
 	   :address => instance['private_ip'],
 	   :name => instance['hostname']
