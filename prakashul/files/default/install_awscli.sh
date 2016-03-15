@@ -1,3 +1,3 @@
 #!/bin/bash 
 sudo apt-get install -y python-pip
-sudo pip install -y awscli
+sudo pip install awscli
