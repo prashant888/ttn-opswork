@@ -44,6 +44,4 @@ done
 done
 
 EOH
-
-  not_if { ::File.exists?(extract_path) }
 end
