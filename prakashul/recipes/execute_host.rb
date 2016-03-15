@@ -1,11 +1,10 @@
 
-cookbook_file "/opt/host_add.sh" do
-  source "host_add.sh"
+file "/var/chef/cookbooks/prakashul/files/default/host_add.sh" do
   mode 0755
+  user "root"
+  mode "755"
 end
 
-execute "host_add.sh" do
-  user "root"
-  cwd "/opt"
-  command "bash host_add.sh"
+execute "/var/chef/cookbooks/prakashul/files/default/host_add.sh" do
+  command "sudo bash /var/chef/cookbooks/prakashul/files/default/host_add.sh"
 end
