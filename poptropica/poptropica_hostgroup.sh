@@ -11,20 +11,22 @@ path_host="/etc/nagios3/host.d"
 
 instance_tag=($(aws ec2 describe-tags --filters "Name=key,Values=CostCenter" --query 'Tags[*].[Value]' --output text | sort |uniq -d))
 
-for instance in ${instance_tag[@]}
+for tag in ${instance_tag[@]}
 	do
 
-host_files=("$path_host"/"$instance".cfg)
+tag=$(echo $tag| tr ':' '-')
+
+host_files=("$path_host"/"$tag".cfg)
 
 
-instance_list1=`cat "$host_files"  |grep -i "host_name" |awk '{print $2}'|sed -e ':a;N;$!ba;s/\n/,/g'`
+instance_list=`cat "$host_files"  |grep -i "host_name" |awk '{print $2}'|sed -e ':a;N;$!ba;s/\n/,/g'`
 
 
-cat << EOF >> "$path_group"/"$instance".cfg
+cat << EOF >> "$path_group"/"$tag".cfg
 define hostgroup {
-        hostgroup_name  $instance
-        alias           $instance
-        members         $instance_list1
+        hostgroup_name  $tag
+        alias           $tag
+        members         $instance_list
                 }
 EOF
 	done
