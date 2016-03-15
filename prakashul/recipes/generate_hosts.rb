@@ -1,5 +1,5 @@
 bash 'generate_hosts' do
-  cwd ::File.dirname(src_filepath)
+  cwd "/opt"
   code <<-EOH
 #####AWS TAG
 AWS_TAG_KEY=tag:CostCenter
