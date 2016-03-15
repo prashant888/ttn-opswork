@@ -4,11 +4,11 @@ bash 'generate_hosts' do
 #####AWS TAG
 AWS_TAG_KEY=tag:CostCenter
 
-##Nagios Host Dir Path Configuration 
+#####Nagios Host Dir Path Configuration 
 nagios_path="/etc/nagios3/host.d"
 
 
-###SCRIPT BEGIN
+#####SCRIPT BEGIN
 
 instance_tag=($(aws ec2 describe-tags --filters "Name=key,Values=CostCenter" --query 'Tags[*].[Value]' --output text | sort |uniq -d))
 
@@ -22,7 +22,7 @@ for InstanceId in ${instance_id[@]}
 
 tag=$(echo $tag| tr ':' '-')
 
-###GENERATE HOST FILES PATH
+######GENERATE HOST FILES PATH
 
 Host_file_Path="$nagios_path"/"$tag".cfg
 

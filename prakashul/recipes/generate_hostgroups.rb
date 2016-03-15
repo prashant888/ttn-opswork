@@ -2,7 +2,7 @@ bash 'generate_hosts' do
   cwd "/opt"
   code <<-EOH
 
-##host & hostgroup path
+##HOSTt & HOSTGROUP FILE PATH
 
 path_group="/etc/nagios3/hostgroup.d"
 path_host="/etc/nagios3/host.d"
