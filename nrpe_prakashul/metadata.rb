@@ -1,1 +1,2 @@
+name 'nrpe'
 depends 'nrpe'
