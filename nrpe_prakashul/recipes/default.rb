@@ -13,7 +13,7 @@ node.override['nrpe']['allowed_hosts'] = %w(3.3.3.3)
 bash "insert_line" do
   user "root"
   code <<-EOS
-  sed -i 's/allowed_hosts=127\.0\.0\.1/d' /etc/nagios/nrpe.cfg
+  sed -i '/allowed_hosts=127\.0\.0\.1/d' /etc/nagios/nrpe.cfg
   echo "allowed_hosts=3.3.3.3" >> /etc/nagios/nrpe.cfg
 EOS
 end
