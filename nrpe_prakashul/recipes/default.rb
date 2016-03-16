@@ -2,11 +2,15 @@ include_recipe 'nrpe::default'
 node.override['nrpe']['server_address'] = '3.3.3.3'
 node.override['nrpe']['allowed_hosts'] = %w(3.3.3.3)
 
-#data = File.read("/etc/nagios/nrpe.cfg") 
-#filtered_data = data.gsub("127.0.0.1", "3.3.3.3") 
-## open the file for writing
-#File.open("/etc/nagios/nrpe.cfg", "w") do |f|
-#  f.write(filtered_data)
-#end
 
-File.write("/etc/nagios/nrpe.cfg",File.open("/etc/nagios/nrpe.cfg",&:read).gsub("allowed_hosts","allowed_hs"))
+def stringReplace(127.0.0.1, 3.3.3.3, /etc/nagios/nrpe.cfg)
+  aFile = File.open(fileName, "r")
+  aString = aFile.read
+  aFile.close
+
+  aString.gsub!(127.0.0.1, 3.3.3.3)
+
+  File.open(fileName, "w") { |file| file << aString }
+end
+
+stringReplace(*ARGV)
