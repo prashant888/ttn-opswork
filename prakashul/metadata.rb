@@ -1,6 +1,2 @@
 name             'Prakashul'
 maintainer       'TTND'
-maintainer_email ''
-license          'All rights reserved'
-description      'Installs/Configures nginx and tomcat'
-version          '0.1.0'
