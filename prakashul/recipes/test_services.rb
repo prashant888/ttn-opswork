@@ -1,6 +1,6 @@
 service_file_path='/etc/nagios3/hostgroup.d/'
-Dir.chdir("#{service_file_path}")
-Dir.glob('*.cfg').each do |files|
+Dir.chdir(service_file_path)
+Dir.glob('*.cfg') do |files|
 files.gsub!('.cfg','')
 
 template "/etc/nagios3/services.d/#{files}.cfg" do
