@@ -55,7 +55,7 @@ default['nrpe']['checksum'] = '66383b7d367de25ba031d37762d83e2b55de010c573009c6f
 
 # authorization options
 default['nrpe']['server_role'] = 'monitoring'
-default['nrpe']['allowed_hosts'] = '3.3.3.3'
+default['nrpe']['allowed_hosts'] = 3.3.3.3
 default['nrpe']['using_solo_search'] = false
 default['nrpe']['multi_environment_monitoring'] = false
 # this is mostly true except for centos-70
