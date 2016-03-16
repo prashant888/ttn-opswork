@@ -4,10 +4,10 @@ Dir.glob('*.cfg').each do |files|
 files.gsub!('.cfg','')
 
 template "/etc/nagios3/services.d/#{files}.cfg" do
-	source 'services.erb'
-	owner 'root'
-	group 'root'
-	mode '0755'
+	source "services.erb"
+	owner "root"
+	group "root"
+	mode "0755"
 	variables( :files => files )
 	end
 end
