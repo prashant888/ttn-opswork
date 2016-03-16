@@ -9,5 +9,6 @@ template '/etc/nagios3/services.d/\files}.cfg' do
 	group 'root'
 	mode '0755'
 	variables( :files => files )
+	action :create
 	end
 end
