@@ -1,2 +1,2 @@
-name 'nrpe'
+name 'nrpe-wrapper'
 depends 'nrpe'
