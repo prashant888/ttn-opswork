@@ -15,4 +15,5 @@ bash "insert_line" do
   code <<-EOS
   sed -i '/allowed_hosts=127\.0\.0\.1/d' /etc/nagios/nrpe.cfg
   echo "allowed_hosts=3.3.3.3" >> /etc/nagios/nrpe.cfg
+EOS
 end
