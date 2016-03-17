@@ -16,7 +16,7 @@ host_file_path="/etc/nagios3/host.d"
 			instance_name = `aws ec2 describe-instances --output text --instance-id #{instance_ids} --query "Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]"`
 			machineNames = instance_name.split(' ').join('-')
 
-			
+			puts replacedTag	
 			puts instance_ip
 			puts machineNames
 			
