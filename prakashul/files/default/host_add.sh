@@ -10,7 +10,7 @@ nagios_path="/etc/nagios3/host.d"
 
 ###SCRIPT BEGIN
 
-instance_tag=($(aws ec2 describe-tags --filters "Name=key,Values=CostCenter" --query 'Tags[*].[Value]' --output text | sort |uniq -d --region $region))
+instance_tag=($(aws ec2 describe-tags --filters "Name=key,Values=CostCenter" --query 'Tags[*].[Value]' --output text --region $region | sort |uniq -d ))
 
 for tag in ${instance_tag[@]}
 	do
