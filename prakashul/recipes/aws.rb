@@ -17,10 +17,10 @@ ruby_block "something" do
         instance_id =`aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId]' --filters Name=instance-state-name,Values=running "Name=tag:CostCenter,Values=#{instance_tag}"`
 	instance_id.split("\n").each do |instance_ids|
         	instance_ip = `aws ec2 describe-instances --instance-ids #{instance_ids} --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text`
-		instance_name = `aws ec2 describe-instances --output text --instance-id #{instance_ids} --query 'Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]'`
-	#	replacedNames = instance_name.sub(' ', '-')
+		instance_name = `aws ec2 describe-instances --output text --instance-id #{instance_ids} --query "Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]"`
+		replacedNames = instance_name.sub(' ', '-')
 		puts instance_ip
-		puts instance_name
+		puts replacedNames
         #puts id
         #puts replacedX
 	end
