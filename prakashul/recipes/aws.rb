@@ -15,7 +15,7 @@ ruby_block "something" do
 command.split("\n").each do |x|
         replacedX = x.sub(':', '-')
         id =`aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId]' --filters Name=instance-state-name,Values=running "Name=tag:CostCenter,Values=#{x}"`
-	id.each do |ips|
+	id.split("\n").each do |ips|
         ip = `aws ec2 describe-instances --instance-ids #{ips} --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text`
 	puts ip
         #puts id
