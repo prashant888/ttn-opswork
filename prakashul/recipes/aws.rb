@@ -13,8 +13,10 @@ host_file_path="/etc/nagios3/host.d"
 	        	instance_ip = `aws ec2 describe-instances --instance-ids #{instance_ids} --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text`
 			instance_name = `aws ec2 describe-instances --output text --instance-id #{instance_ids} --query "Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]"`
 			#machineNames = instance_name.sub(' ', '')
-			replacedNames = instance_name.sub('\n', '')
-			machineNames = replacedNames.sub(' ', '-')
+			instance_name.split("\n").each do |names|
+			
+
+			machineNames = names.sub(' ', '-')
 			puts instance_ip
 			puts machineNames
 			instance_ip.split("\n").each do |ip|
@@ -36,3 +38,4 @@ host_file_path="/etc/nagios3/host.d"
 		end	
 	
 	end
+end
