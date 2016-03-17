@@ -4,10 +4,6 @@
 host_file_path="/etc/nagios3/host.d"
 
 
-ruby_block "Create Hosts Files" do
-block do
-        #tricky way to load this Chef::Mixin::ShellOut utilities
-        Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
         command = `aws ec2 describe-tags --filters 'Name=key,Values=CostCenter' --query 'Tags[*].[Value]' --output text | sort |uniq -d`
 	command.split("\n").each do |instance_tag|
 	        replacedTag = instance_tag.sub(':', '-')
@@ -36,5 +32,3 @@ block do
 				end
 			end
 		end
-        end
-end
