@@ -21,15 +21,18 @@ block do
 			puts machineNames
 	        #puts id
 	        #puts replacedX
+
+
+			template "#{host_file_path}/#{replacedTag}.cfg" do
+			        source "hosts.erb"
+			        owner "root"
+			        group "root"
+			        mode "0755"
+			        variables( machineNames => machineNames,
+					  instance_ip => instance_ip	 )
+			
+				end
 			end
 		end
-	    end
-template "#{host_file_path}/#{replacedTag}.cfg" do
-        source "hosts.erb"
-        owner "root"
-        group "root"
-        mode "0755"
-        variables( machineNames => machineNames,
-		  instance_ip => instance_ip	 )
         end
 end
