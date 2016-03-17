@@ -29,8 +29,8 @@ template "#{host_file_path}/#{replacedTag}.cfg" do
         owner "root"
         group "root"
         mode "0755"
-        variables( @machineNames => machineNames,
-		   @ip => ip	 )
+        variables( machineNames => @machineNames,
+		   ip => @ip	 )
 			
 				end
 			end
