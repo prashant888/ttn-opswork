@@ -11,31 +11,29 @@ host_file_path="/etc/nagios3/host.d"
 	
 		instance_id.split("\n").each do |instance_ids|
 	        	instance_ip = `aws ec2 describe-instances --instance-ids #{instance_ids} --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text`
-			instance_name = `aws ec2 describe-instances --output text --instance-id #{instance_ids} --query "Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]"`
-			machineNames = instance_name.sub(' ', '-')
-			machineNames.split("\n").each do |names|
-			
+			inst_ip = instance_ip.split("\n").each do |ip|
 
-			machineNames = names.sub(' ', '')
+			instance_name = `aws ec2 describe-instances --output text --instance-id #{instance_ids} --query "Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]"`
+			machineNames = instance_name.split(' ').join('-')
+
+			
 			puts instance_ip
 			puts machineNames
-			instance_ip.split("\n").each do |ip|
 			
 	        #puts id
 	        #puts replacedX
 
 
-			template "#{host_file_path}/#{replacedTag}.cfg" do
-			        source "hosts.erb"
-			        owner "root"
-			        group "root"
-			        mode "0755"
-			        variables( machineNames => machineNames,
-					   ip => ip	 )
+template "#{host_file_path}/#{replacedTag}.cfg" do
+        source "hosts.erb"
+        owner "root"
+        group "root"
+        mode "0755"
+        variables( machineNames => machineNames,
+		   ip => ip	 )
 			
 				end
 			end
 		end	
 	
 	end
-end
