@@ -18,9 +18,9 @@ ruby_block "something" do
 	instance_id.split("\n").each do |instance_ids|
         	instance_ip = `aws ec2 describe-instances --instance-ids #{instance_ids} --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text`
 		instance_name=`aws ec2 describe-instances --output text --instance-id #{instance_ids} --query 'Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]'`
-		replacedNames = instance_name.sub(' ', '-')
+	#	replacedNames = instance_name.sub(' ', '-')
 		puts instance_ip
-		puts replacedNames
+		puts instance_name
         #puts id
         #puts replacedX
 	end
