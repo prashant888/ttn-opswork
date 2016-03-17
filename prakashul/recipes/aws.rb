@@ -13,11 +13,14 @@ ruby_block "something" do
         Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
         command = `aws ec2 describe-tags --filters 'Name=key,Values=CostCenter' --query 'Tags[*].[Value]' --output text | sort |uniq -d`
 command.split("\n").each do |x|
-        id =`aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId]' --filters Name=instance-state-name,Values=running "Name=tag:CostCenter,Values=#{x}"`
         replacedX = x.sub(':', '-')
-        #ip = `aws ec2 describe-instances --instance-ids "#{id}" --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text`
-        puts id
-        puts replacedX
+        id =`aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId]' --filters Name=instance-state-name,Values=running "Name=tag:CostCenter,Values=#{x}"`
+	id.each do |ips|
+        ip = `aws ec2 describe-instances --instance-ids "#{ips}" --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text`
+	puts ip
+        #puts id
+        #puts replacedX
+	end
 end
 
     end
