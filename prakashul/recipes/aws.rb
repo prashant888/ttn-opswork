@@ -17,6 +17,8 @@ host_file_path="/etc/nagios3/host.d"
 			machineNames = replacedNames.sub(' ', '-')
 			puts instance_ip
 			puts machineNames
+			instance_ip.split("\n").each do |ip|
+			
 	        #puts id
 	        #puts replacedX
 
@@ -27,8 +29,10 @@ host_file_path="/etc/nagios3/host.d"
 			        group "root"
 			        mode "0755"
 			        variables( machineNames => machineNames,
-					  instance_ip => instance_ip	 )
+					   ip => ip	 )
 			
 				end
 			end
-		end
+		end	
+	
+	end
