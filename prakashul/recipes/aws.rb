@@ -18,9 +18,12 @@ command.split("\n").each do |instance_tag|
 		instance_id =`aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId]' --filters Name=instance-state-name,Values=running "Name=tag:CostCenter,Values=#{instance_tag}" --region 'us-east-1'`
 		replacedX = instance_tag.sub(':', '-')
 		intance_ip = `aws ec2 describe-instances --instance-ids "#{instance_id}" --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text --region 'us-east-1'`
-		puts instance_id replacedX intance_ip
+		instance_ip.split("\n").each do |intance_ips|
+		#puts instance_id replacedX intance_ip
 		#puts replacedX
 		#puts intance_ip
+		puts intance_ips
+		end
 		end
 
     end
