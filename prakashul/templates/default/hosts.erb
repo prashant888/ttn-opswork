@@ -2,5 +2,5 @@ define host{
         use                     generic-host            ; Name of host template to use
         host_name               <%= @machineName %>
         alias                   <%= @machineName %>
-        address                 <%= @ip %>
+        address                 <%= @instance_ip %>
         }
