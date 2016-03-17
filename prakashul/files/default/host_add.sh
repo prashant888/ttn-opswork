@@ -26,11 +26,12 @@ tag=$(echo $tag| tr ':' '-')
 
 Host_file_Path="$nagios_path"/"$tag".cfg
 
-instance_ip=$(aws ec2 describe-instances --instance-ids $InstanceId --query 'Reservations[*].Instances[*].NetworkInterfaces[*].PrivateIpAddress' --output text )
+instance_ip=$(aws ec2 describe-instances --instance-ids $InstanceId --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text )
 
 instance_host=$(aws ec2 describe-instances --output text --instance-id $InstanceId --query 'Reservations[*].Instances[*].Tags[?Key==`Name`].Value[]')
 
 instance_name=`echo $instance_host | tr ' ' '-'`
+instance_name=`echo $instance_name | cut -d "(" -f2 | cut -d ")" -f1`
 
 cat << EOF >> "$Host_file_Path"
 define host{
