@@ -1,6 +1,9 @@
 nagios_path="/etc/nagios3/nagios.cfg"
 
-include_recipe "nagios::server_source"
+
+
+include_recipe "nagios::default"
+include_recipe "nagios::server_package"
 
 directory '/etc/nagios3/host.d' do
   owner 'root'
