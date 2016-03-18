@@ -2,7 +2,7 @@
 nagios_path='/etc/nagios3'
 
 
-inlude_recipe 'nagios::default'
+include_recipe 'nagios::default'
 
 directory '/etc/nagios3/host.d' do
   owner 'root'
