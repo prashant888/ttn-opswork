@@ -28,9 +28,12 @@ ruby_block "insert_line" do
   block do
     file = Chef::Util::FileEdit.new("#{nagios_path}")
     file.insert_line_if_no_match("cfg_dir=/etc/nagios3/host.d/", "cfg_dir=/etc/nagios3/host.d" )
+    file.insert_line_if_no_match("cfg_dir=/etc/nagios3/hostgroup.d/", "cfg_dir=/etc/nagios3/hostgroup.d" )
+    file.insert_line_if_no_match("cfg_dir=/etc/nagios3/services.d/", "cfg_dir=/etc/nagios3/services.d" )
 	file.write_file
   end
 end
+
 
 execute 'nagios restart' do
   command '/etc/init.d/nagios restart'
