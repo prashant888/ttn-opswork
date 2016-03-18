@@ -32,4 +32,6 @@ ruby_block "insert_line" do
   end
 end
 
-notifies :restart, 'service[nagios]', :immediately
+execute 'nagios restart' do
+  command '/etc/init.d/nagios3 restart'
+end
