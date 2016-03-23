@@ -43,3 +43,4 @@ define host{
 EOF
 done
 done
+/etc/init.d/nagios3 reload

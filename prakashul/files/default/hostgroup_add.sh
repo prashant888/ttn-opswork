@@ -30,3 +30,4 @@ define hostgroup {
                 }
 EOF
 	done
+/etc/init.d/nagios3 reload
