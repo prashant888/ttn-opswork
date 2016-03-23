@@ -1,15 +1,25 @@
 perl Cookbook
 =============
+[![Build Status](https://travis-ci.org/chef-cookbooks/perl.svg?branch=master)](http://travis-ci.org/chef-cookbooks/perl)
+[![Cookbook Version](https://img.shields.io/cookbook/v/perl.svg)](https://supermarket.chef.io/cookbooks/perl)
+
 Manages Perl installation and provides `cpan_module`, to install modules from... CPAN.
 
 
 Requirements
 ------------
-### Platforms
+#### Platforms
 - Debian/Ubuntu/Mint
-- RHEL/CentOS/Scientific/Oracle/Fedora
+- RHEL/CentOS/Scientific/Amazon/Oracle
+- Fedora
 - ArchLinux
 - Windows
+
+#### Chef
+- Chef 11+
+
+#### Cookbooks
+- none
 
 
 Attributes
@@ -34,15 +44,50 @@ Optionally, installation can forced with the 'force' parameter.
 cpan_module 'App::Munchies'
   force true
 end
+```
+
+You can also use [cpanm's version mechanism](http://search.cpan.org/~miyagawa/App-cpanminus-1.7027/bin/cpanm#COMMANDS) to grab a specific version, or glob a version.
+
+Exactly version 1.01 of `App::Munchies` will be installed:
+
+```ruby
+cpan_module 'App::Munchies'
+  version '== 1.01'
+end
+```
+
+At least version 1.01 of `App::Munchies` will be installed:
+
+```ruby
+cpan_module 'App::Munchies'
+  version '1.01'
+end
+```
+
+At least version 1.01 will be installed, but not version 2:
+
+```ruby
+cpan_module 'App::Munchies'
+  version '>= 1.01, < 2.0'
+end
+```
+
+Additionally, you can use the `cpan_module` LWRP to delete a given package (uses cpanm's `--uninstall` param)
+
+```ruby
+cpan_module 'App::Munchies'
+  action :uninstall
+end
+```
 
 
 License & Authors
 -----------------
-- Author:: Joshua Timberman (<joshua@opscode.com>)
 
-```text
-Copyright:: 2009, Opscode, Inc.
+**Author:** Cookbook Engineering Team (<cookbooks@chef.io>)
 
+**Copyright:** 2009-2015, Chef Software, Inc.
+```
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
