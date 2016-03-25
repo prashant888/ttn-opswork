@@ -34,7 +34,6 @@ ruby_block "insert_line" do
   end
 end
 
-
 execute 'nagios restart' do
   command '/etc/init.d/nagios restart'
 end
