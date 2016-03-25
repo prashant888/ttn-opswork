@@ -35,7 +35,6 @@ fi
 
 instance_host=$(aws ec2 describe-instances --output text --instance-id $InstanceId --query 'Reservations[*].Instances[*].Tags[?Key==`Name`].Value[]' --region $region)
 
-
 Host_file_Path="$nagios_path"/"$tag_new".cfg
 
 instance_name=`echo $instance_host | tr ' ' '-'`
