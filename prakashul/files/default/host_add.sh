@@ -20,15 +20,23 @@ instance_id=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].[
 for InstanceId in ${instance_id[@]}
 	do
 
-tag=$(echo $tag| tr ':' '-')
+tag_new=$(echo $tag| tr ':' '-')
 
 ###GENERATE HOST FILES PATH
 
-Host_file_Path="$nagios_path"/"$tag".cfg
+if [ "$tag" == "Kids:Funbrain" ] ; then 
+
+instance_ip=$(aws ec2 describe-instances --instance-ids $InstanceId --query 'Reservations[*].Instances[*].PublicIpAddress' --output text --region $region )
+
+else 
 
 instance_ip=$(aws ec2 describe-instances --instance-ids $InstanceId --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region $region )
+fi
 
 instance_host=$(aws ec2 describe-instances --output text --instance-id $InstanceId --query 'Reservations[*].Instances[*].Tags[?Key==`Name`].Value[]' --region $region)
+
+
+Host_file_Path="$nagios_path"/"$tag_new".cfg
 
 instance_name=`echo $instance_host | tr ' ' '-'`
 instance_name=`echo $instance_name | cut -d "(" -f2 | cut -d ")" -f1`
