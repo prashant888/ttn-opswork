@@ -1,0 +1,12 @@
+define servicegroup{
+    servicegroup_name       Basic-Services
+    alias                   Basic-Services
+    members                 <%= @items_basic_string %>
+
+}
+define servicegroup{
+    servicegroup_name       Advanced-Services
+    alias                   Advanced-Services
+    members                 <%= @items_advanced_string %>
+
+}

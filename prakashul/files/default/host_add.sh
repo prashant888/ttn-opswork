@@ -39,7 +39,7 @@ Host_file_Path="$nagios_path"/"$tag_new".cfg
 
 instance_name=`echo $instance_host | tr ' ' '-'`
 
-instance_name=`echo $instance_host | tr '--' ''`
+instance_name=`echo $instance_host | tr '---' '-'`
 instance_name=`echo $instance_name | cut -d "(" -f2 | cut -d ")" -f1`
 
 cat << EOF >> "$Host_file_Path"
