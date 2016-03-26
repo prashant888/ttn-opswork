@@ -4,9 +4,6 @@ np = gem_package 'nagios_parser' do
   action :install
 end
 
-
-Gem.clearpaths
-
 require 'nagios_parser/object/parser'
 
 services_file_path='/etc/nagios3/services.d/'
