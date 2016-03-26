@@ -1,4 +1,4 @@
-require 'nagios_parser/object/parser'
+#require 'nagios_parser/object/parser'
 require 'pp'
 chef_gem 'nagios_parser'
 
