@@ -1,6 +1,10 @@
 #require 'nagios_parser/object/parser'
 require 'pp'
-chef_gem 'nagios_parser'
+#chef_gem 'nagios_parser'
+
+gem_package 'nagios_parser' do
+ action :install
+end
 
 services_file_path='/etc/nagios3/services.d/'
 
