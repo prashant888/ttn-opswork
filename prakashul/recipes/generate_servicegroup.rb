@@ -28,9 +28,9 @@ Dir.glob("#{services_file_path}*.cfg") do |config_file|
 	puts items_advanced
 # end
 
-# Dir.chdir(services_file_path)
-# Dir.glob('*.cfg') do |files|
-	filename = config_file.gsub!('.cfg','')
+#Dir.chdir(services_file_path)
+#Dir.glob('*.cfg') do |files|
+	filename = File.basename(config_file)
 
 	template "/etc/nagios3/servicegroup.d/#{filename}.cfg" do |file|
 		source "servicegroup.erb"
