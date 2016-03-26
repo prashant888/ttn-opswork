@@ -50,4 +50,4 @@ define host{
 EOF
 done
 done
-/etc/init.d/nagios restart
+#/etc/init.d/nagios restart
