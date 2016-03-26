@@ -1,6 +1,6 @@
 
 np = gem_package 'nagios_parser' do
-  version: "1.3.0"
+  version "1.3.0"
   action :nothing
 end
 
@@ -54,7 +54,7 @@ end
 
 
 
-end
+
 
 
 # write config files
