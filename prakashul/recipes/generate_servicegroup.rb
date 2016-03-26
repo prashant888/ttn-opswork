@@ -23,8 +23,8 @@ Dir.glob('/etc/nagios3/services.d/*.cfg') do |config_file|
 			_basic.push("#{node['host_name']},#{node['service_description']}")
 		end
 	end
-	items_basic[config_file] = items_basic.join " "
-	items_advanced[config_file] = items_advanced.join " "
+	items_basic[config_file] = _basic.join " "
+	items_advanced[config_file] = _advanced.join " "
 
 end
 
