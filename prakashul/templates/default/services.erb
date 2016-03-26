@@ -1,7 +1,7 @@
 define service{
        use                             generic-service         ; Name of service template to use
        host_name                       <%= @files %>
-       service_description             Disk Space
+       service_description             Disk_Space
        check_command                   check_nrpe!check_disk
        }
 
@@ -9,7 +9,7 @@ define service{
 define service{
        use                             generic-service         ; Name of service template to use
        host_name                       <%= @files %>
-       service_description             Current Users
+       service_description             Current_Users
        check_command                   check_nrpe!check_users
        }
 
@@ -17,14 +17,14 @@ define service{
 define service{
        use                             generic-service         ; Name of service template to use
        host_name                       <%= @files %>
-       service_description             Total Processes
+       service_description             Total_Processes
        check_command                   check_nrpe!check_total_procs
        }
 
 define service{
        use                             generic-service         ; Name of service template to use
        host_name                       <%= @files %>
-       service_description             Current Load
+       service_description             Current_Load
        check_command                   check_nrpe!check_load
        }
 
