@@ -1,5 +1,6 @@
 require 'nagios_parser/object/parser'
 require 'pp'
+chef_gem 'nagios_parser'
 
 services_file_path='/etc/nagios3/services.d/'
 
