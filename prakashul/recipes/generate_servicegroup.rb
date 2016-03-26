@@ -32,7 +32,7 @@ Dir.glob("#{services_file_path}*.cfg") do |config_file|
 #Dir.glob('*.cfg') do |files|
 	filename = File.basename(config_file)
 
-	template "/etc/nagios3/servicegroup.d/#{filename}.cfg" do |file|
+	template "/etc/nagios3/servicegroup.d/#{filename}" do |file|
 		source "servicegroup.erb"
 		owner "root"
 		group "root"
