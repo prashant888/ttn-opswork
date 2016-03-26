@@ -1,10 +1,9 @@
 
 np = gem_package 'nagios_parser' do
   version "1.3.0"
-  action :nothing
+  action :install
 end
 
-np.runaction(:install)
 
 Gem.clearpaths
 
