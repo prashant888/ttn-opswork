@@ -28,7 +28,7 @@ Dir.glob('/etc/nagios3/services.d/*.cfg') do |config_file|
 
 end
 
-Dir.chdir(service_file_path)
+Dir.chdir(services_file_path)
 Dir.glob('*.cfg') do |files|
 files.gsub!('.cfg','')
 
