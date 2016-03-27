@@ -25,3 +25,11 @@ basic = cgroups("#{contacts_file_path}basic.cfg")
 puts advanced
 puts basic
 
+template "/etc/nagios3/contactgroup.d/cgroup.cfg" do
+source "contactgroup.erb"
+owner "root"
+group "root"
+mode "0755"
+variables( :advanced => advanced,
+           :basic => basic)
+end
