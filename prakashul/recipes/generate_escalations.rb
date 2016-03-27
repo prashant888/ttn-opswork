@@ -25,14 +25,13 @@ puts hostgrouplist
 #Dir.glob('*.cfg') do |files|
 #	filename = File.basename(config_file)
 #
-#	template "/etc/nagios3/servicegroup.d/#{filename}" do |file|
-#		source "servicegroup.erb"
-#		owner "root"
-#		group "root"
-#		mode "0755"
-#		variables( :items_basic_string => items_basic,
-#			   :items_advanced_string => items_advanced)
-#		end
+template "/etc/nagios3/service_escalation.d/escalation.cfg" do 
+	source "service_escalation.erb"
+	owner "root"
+	group "root"
+	mode "0755"
+	variables( :hostgrouplist => hostgrouplist)
+end
 #end
 
 
