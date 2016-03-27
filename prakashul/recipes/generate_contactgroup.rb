@@ -12,7 +12,7 @@ def cgroups (file)
 
 	_parsed = NagiosParser::Object::Parser.parse(File.read(file))
         _items = []
-        config_parsed['contact'].each do |node|
+        _parsed['contact'].each do |node|
                _items.push node['contact_name']
         end
 
