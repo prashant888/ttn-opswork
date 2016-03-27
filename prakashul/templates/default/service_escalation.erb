@@ -1,0 +1,36 @@
+define serviceescalation{
+    hostgroup_name             nt-3
+    service_description        Disk_Space
+    first_notification_time    60
+    last_notification_time     120
+    notification_interval      30
+    contact_groups             Advanced_contacts
+}
+
+define serviceescalation{
+    hostgroup_name             nt-3
+    service_description        Current_Users
+    first_notification_time    60
+    last_notification_time     120
+    notification_interval      30
+    contact_groups             Basic_contacts
+}
+
+define serviceescalation{
+    hostgroup_name             nt-3
+    service_description        Total_Processes
+    first_notification_time    60
+    last_notification_time     120
+    notification_interval      30
+    contact_groups             Basic_contacts
+}
+
+
+define serviceescalation{
+    hostgroup_name             nt-3
+    service_description        Current_Load
+    first_notification_time    60
+    last_notification_time     120
+    notification_interval      30
+    contact_groups             Basic_contacts
+}
