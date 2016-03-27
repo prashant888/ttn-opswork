@@ -15,7 +15,7 @@ Dir.glob("#{hostgroup_file_path}*.cfg") do |config_file|
 
 	config_parsed = NagiosParser::Object::Parser.parse(File.read(config_file))
 	config_parsed['hostgroup'].each do |node|
-		_hgroup.push node['host_name']
+		_hgroup.push node['hostgroup_name']
 	end
 	
 end
