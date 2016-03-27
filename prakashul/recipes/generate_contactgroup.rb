@@ -5,17 +5,23 @@ end
 
 require 'nagios_parser/object/parser'
 
-services_file_path='/etc/nagios3/contacts.d/'
+contacts_file_path='/etc/nagios3/contacts.d/'
 
-# read config file
-Dir.glob("#{services_file_path}*.cfg") do |config_file|
 
-        config_parsed = NagiosParser::Object::Parser.parse(File.read(config_file))
+def cgroups (file)
+
+	_parsed = NagiosParser::Object::Parser.parse(File.read(file))
         _items = []
         config_parsed['contact'].each do |node|
-	       _items.push node['contact_name']
+               _items.push node['contact_name']
         end
 
-        contacts = _items.join ","
-	puts contacts
+        _items.join ","
 end
+
+advanced = cgroups("#{contacts_file_path}advanced.cfg")
+basic = cgroups("#{contacts_file_path}basic.cfg")
+
+puts advanced
+puts basic
+
