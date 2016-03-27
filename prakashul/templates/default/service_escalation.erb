@@ -1,5 +1,5 @@
 define serviceescalation{
-    hostgroup_name             nt-3
+    hostgroup_name             <%= @hostgrouplist %>
     service_description        Disk_Space
     first_notification_time    60
     last_notification_time     120
@@ -8,7 +8,7 @@ define serviceescalation{
 }
 
 define serviceescalation{
-    hostgroup_name             nt-3
+    hostgroup_name             <%= @hostgrouplist %>
     service_description        Current_Users
     first_notification_time    60
     last_notification_time     120
@@ -17,7 +17,7 @@ define serviceescalation{
 }
 
 define serviceescalation{
-    hostgroup_name             nt-3
+    hostgroup_name             <%= @hostgrouplist %>
     service_description        Total_Processes
     first_notification_time    60
     last_notification_time     120
@@ -27,7 +27,7 @@ define serviceescalation{
 
 
 define serviceescalation{
-    hostgroup_name             nt-3
+    hostgroup_name             <%= @hostgrouplist %>
     service_description        Current_Load
     first_notification_time    60
     last_notification_time     120
