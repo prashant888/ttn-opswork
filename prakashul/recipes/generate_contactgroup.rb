@@ -30,7 +30,7 @@ Dir.glob("#{contacts_file_path}*.cfg") do |config_file|
 #		mode "0755"
 #		variables( :_hgroups => _hgroups)
 #		end
-#end
+end
 
 
 
