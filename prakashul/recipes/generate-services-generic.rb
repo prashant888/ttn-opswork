@@ -34,7 +34,7 @@ Dir.glob("#{contactgroup_file_path}*.cfg") do |config_file|
  	puts items_cgroup	
 
 
-items_services.each do |name|
+_services.each do |name|
 
 template "/etc/nagios3/service-generic.d/#{name}" do
 	source "services-generic.erb"
