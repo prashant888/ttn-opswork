@@ -15,8 +15,9 @@ Dir.glob("#{contacts_file_path}*.cfg") do |config_file|
 	_cg = []
 	config_parsed['contact'].each do |node|
 			_cg.push("#{node['contact_name']}")
+			_hgroups = _cg.join ","
+
 	end
-		_hgroups = _cg.join ","
 			puts _hgroups
 	end
 
