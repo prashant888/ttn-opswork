@@ -1,6 +1,3 @@
-
-
-
 hostgroup_file_path='/etc/nagios3/hostgroup.d/'
 _hgroup = []
 # read config file
@@ -11,17 +8,17 @@ Dir.glob("#{hostgroup_file_path}*.cfg") do |config_file|
                         _hgroup.push("#{node['hostgroup_name']}")
                 end
         end
-        items_hgroup = _hgroup.join " "
+        items_hgroup = _hgroup.join ","
         puts items_hgroup
 
 
 _hgroup.each do |name|
-
+puts name
 template "/etc/nagios3/services.d/#{name}.cfg" do
-	source "services.erb"
-	owner "root"
-	group "root"
-	mode "0755"
-	variables( :name => name )
-	end
+source "services.erb"
+owner "root"
+group "root"
+mode "0755"
+variables(:name => name)
+end
 end
