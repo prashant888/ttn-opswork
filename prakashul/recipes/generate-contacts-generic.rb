@@ -32,16 +32,6 @@ end
 end
 #Dir.chdir(hgroup_file_path)
 #Dir.glob('*.cfg') do |files|
-#	filename = File.basename(files)
-#	template "/etc/nagios3/contacts.d/#{filename}.cfg" do 
-#		source "contacts-generic.erb"
-#		owner "root"
-#		group "root"
-#		mode "0755"
-#		variables( :items_contacts => items_contacts,
-#			   :email => email	)
-#end
-#
 
 
 
