@@ -22,15 +22,15 @@ puts _hgroups
 #Dir.chdir(contacts_file_path)
 #Dir.glob('*.cfg') do |files|
 
-#template "/etc/nagios3/contactgroup.d/cg-generic.cfg" do
-#	source "contactgroup-generic.erb"
-#	owner "root"
-#	group "root"
-#	mode "0755"
-#	variables( :_hgroups => _hgroups)
-#	end
-#
-#
+template "/etc/nagios3/contactgroup.d/cg-generic.cfg" do
+	source "contactgroup-generic.erb"
+	owner "root"
+	group "root"
+	mode "0755"
+	variables( :_hgroups => _hgroups)
+	end
+
+
 
 
 
