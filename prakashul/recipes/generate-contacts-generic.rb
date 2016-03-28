@@ -16,12 +16,10 @@ Dir.glob("#{hgroup_file_path}*.cfg") do |config_file|
 	config_parsed['hostgroup'].each do |node|
 			_contacts.push("#{node['hostgroup_name']}")
 		end
-	end
 	items_contacts = _contacts.join ","
-	
 	puts items_contacts
 
-
+end
 Dir.chdir(hgroup_file_path)
 Dir.glob('*.cfg') do |files|
 	filename = File.basename(files)
