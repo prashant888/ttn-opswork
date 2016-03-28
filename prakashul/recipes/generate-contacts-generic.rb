@@ -7,7 +7,7 @@ end
 require 'nagios_parser/object/parser'
 
 hgroup_file_path='/etc/nagios3/hostgroup.d/'
-
+email='prakashul@gmail.com'
 # read config file
 Dir.glob("#{hgroup_file_path}*.cfg") do |config_file|
 
@@ -18,6 +18,16 @@ Dir.glob("#{hgroup_file_path}*.cfg") do |config_file|
 		end
 	items_contacts = _contacts.join ","
 	puts items_contacts
+
+template "/etc/nagios3/contacts.d/#{items_contacts}.cfg" do 
+	 source "contacts-generic.erb"
+	 owner "root"
+	 group "root"
+	 mode "0755"
+	 variables( :items_contacts => items_contacts,
+                          :email => email      )
+end
+
 
 end
 #Dir.chdir(hgroup_file_path)
@@ -30,7 +40,6 @@ end
 #		mode "0755"
 #		variables( :items_contacts => items_contacts,
 #			   :email => email	)
-#		end
 #end
 #
 
