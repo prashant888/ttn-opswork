@@ -1,3 +1,13 @@
+
+
+np = gem_package 'nagios_parser' do
+  version "1.3.0"
+  action :install
+end
+
+require 'nagios_parser/object/parser'
+
+
 hostgroup_file_path='/etc/nagios3/hostgroup.d/'
 _hgroup = []
 # read config file
