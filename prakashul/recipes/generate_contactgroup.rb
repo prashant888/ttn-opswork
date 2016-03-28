@@ -7,20 +7,18 @@ end
 require 'nagios_parser/object/parser'
 
 contacts_file_path='/etc/nagios3/contacts.d/'
-
+_cg = []
 # read config file
 Dir.glob("#{contacts_file_path}*.cfg") do |config_file|
 
 	config_parsed = NagiosParser::Object::Parser.parse(File.read(config_file))
-	_cg = []
 	config_parsed['contact'].each do |node|
-			_cg.push("#{node['contact_name']}")
-			_hgroups = _cg.join ","
+			_cg.push node['contact_name']
 
 	end
-			puts _hgroups
 	end
-
+_hgroups = _cg.join ","
+puts _hgroups
 #Dir.chdir(contacts_file_path)
 #Dir.glob('*.cfg') do |files|
 
