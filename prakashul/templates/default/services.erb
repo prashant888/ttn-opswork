@@ -1,6 +1,6 @@
 define service{
-       use                             generic-service         ; Name of service template to use
-       host_name                       <%= @files %>
+       use                             <%= @name %>         ; Name of service template to use
+       host_name                       <%= @name %>
        service_description             Disk_Space
        servicegroups 		       Advanced-Services
        check_command                   check_nrpe!check_disk
@@ -8,8 +8,8 @@ define service{
 
 
 define service{
-       use                             generic-service         ; Name of service template to use
-       host_name                       <%= @files %>
+       use                             <%= @name %>         ; Name of service template to use
+       host_name                       <%= @name %>
        service_description             Current_Users
        servicegroups                   Basic-Services
        check_command                   check_nrpe!check_users
@@ -17,16 +17,16 @@ define service{
 
 
 define service{
-       use                             generic-service         ; Name of service template to use
-       host_name                       <%= @files %>
+       use                             <%= @name %>         ; Name of service template to use
+       host_name                       <%= @name %>
        service_description             Total_Processes
        servicegroups                   Basic-Services
        check_command                   check_nrpe!check_total_procs
        }
 
 define service{
-       use                             generic-service         ; Name of service template to use
-       host_name                       <%= @files %>
+       use                             <%= @name %>         ; Name of service template to use
+       host_name                       <%= @name %>
        service_description             Current_Load
        servicegroups                   Basic-Services
        check_command                   check_nrpe!check_load
