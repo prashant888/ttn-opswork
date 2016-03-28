@@ -1,3 +1,4 @@
+
 np = gem_package 'nagios_parser' do
   version "1.3.0"
   action :install
@@ -7,26 +8,43 @@ require 'nagios_parser/object/parser'
 
 contacts_file_path='/etc/nagios3/contacts.d/'
 
+# read config file
+Dir.glob("#{contacts_file_path}*.cfg") do |config_file|
 
-def cgroups (file)
+	config_parsed = NagiosParser::Object::Parser.parse(File.read(config_file))
+	_cg = []
+	config_parsed['contact'].each do |node|
+			_cg.push("#{node['contact_name']}")
+	end
+	_hgroups = _cg.join ","
+	
+	puts _hgroups
 
-	_parsed = NagiosParser::Object::Parser.parse(File.read(file))
-        _items = []
-        _parsed['contact'].each do |node|
-               _items.push node['contact_name']
-        end
+#Dir.chdir(contacts_file_path)
+#Dir.glob('*.cfg') do |files|
 
-        _items.join ","
-end
-
-_hgroups = cgroups("#{contacts_file_path}cg-generic.cfg")
-
-puts _hgroups
-
-#template "/etc/nagios3/contactgroup.d/cg-generic.cfg" do
-#source "contactgroup-generic.erb"
-#owner "root"
-#group "root"
-#mode "0755"
-#variables( :_hgroups => _hgroups)
+#	template "/etc/nagios3/contactgroup.d/cg-generic.cfg" do
+#		source "contactgroup-generic.erb"
+#		owner "root"
+#		group "root"
+#		mode "0755"
+#		variables( :_hgroups => _hgroups)
+#		end
 #end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# write config files
+#/etc/nagios3/servicegroup.d
+
