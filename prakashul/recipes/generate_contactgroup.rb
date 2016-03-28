@@ -17,9 +17,8 @@ Dir.glob("#{contacts_file_path}*.cfg") do |config_file|
 			_cg.push("#{node['contact_name']}")
 	end
 		_hgroups = _cg.join ","
-
+			puts _hgroups
 	end
-	puts _hgroups
 
 #Dir.chdir(contacts_file_path)
 #Dir.glob('*.cfg') do |files|
