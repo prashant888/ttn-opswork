@@ -36,7 +36,7 @@ Dir.glob("#{contactgroup_file_path}*.cfg") do |config_file|
 
 _services.each do |name|
 
-template "/etc/nagios3/service-generic.d/#{name}" do
+template "/etc/nagios3/service-generic.d/#{name}.cfg" do
 	source "services-generic.erb"
 	owner "root"
 	group "root"
