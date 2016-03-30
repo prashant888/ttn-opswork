@@ -35,7 +35,8 @@ template "/etc/nagios3/contacts.d/#{name}.cfg" do
 	 variables( :name => name,
                           :email => email      )
 end
-
-
 end
+end
+
+#end
 
