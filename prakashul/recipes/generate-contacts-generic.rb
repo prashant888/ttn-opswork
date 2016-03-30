@@ -4,7 +4,9 @@ np = gem_package 'nagios_parser' do
   action :install
 end
 
-require 'nagios_parser/object/parser'
+#require 'nagios_parser/object/parser'
+chef_gem 'nagios_parser/object/parser'
+
 
 hgroup_file_path='/etc/nagios3/hostgroup.d/'
 email='prakashul@gmail.com'
@@ -30,21 +32,4 @@ end
 
 
 end
-#Dir.chdir(hgroup_file_path)
-#Dir.glob('*.cfg') do |files|
-
-
-
-
-
-
-
-
-
-
-
-
-
-# write config files
-#/etc/nagios3/servicegroup.d
 

@@ -2,7 +2,7 @@ define service{
        use                             <%= @name %>         ; Name of service template to use
        host_name                       <%= @name %>
        service_description             Disk_Space
-       servicegroups 		       Advanced-Services
+       servicegroups 		       Basic-Services
        check_command                   check_nrpe!check_disk
        }
 

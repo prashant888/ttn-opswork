@@ -46,19 +46,3 @@ template "/etc/nagios3/service-generic.d/#{name}.cfg" do
 		end
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# write config files
-#/etc/nagios3/servicegroup.d
-

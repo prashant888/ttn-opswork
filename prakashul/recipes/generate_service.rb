@@ -1,5 +1,3 @@
-
-
 np = gem_package 'nagios_parser' do
   version "1.3.0"
   action :install
@@ -20,7 +18,6 @@ Dir.glob("#{hostgroup_file_path}*.cfg") do |config_file|
         end
         items_hgroup = _hgroup.join ","
         puts items_hgroup
-
 
 _hgroup.each do |name|
 puts name
