@@ -1,9 +1,4 @@
-
-gem_package 'nagios_parser' do
-  version "1.3.0"
-  action :install
-end
-
+chef_gem 'nagios_parser'
 require 'nagios_parser/object/parser'
 
 hostgroup_file_path = "/etc/nagios3/hostgroup.d/"
@@ -19,12 +14,12 @@ Dir.glob("#{hostgroup_file_path}*.cfg") do |config_file|
 	end
 	
 end
+
+
 hostgrouplist = _hgroup.join ","
 puts hostgrouplist
-#Dir.chdir(services_file_path)
-#Dir.glob('*.cfg') do |files|
-#	filename = File.basename(config_file)
-#
+
+
 template "/etc/nagios3/service_escalation.d/escalation.cfg" do 
 	source "service_escalation.erb"
 	owner "root"
@@ -32,19 +27,3 @@ template "/etc/nagios3/service_escalation.d/escalation.cfg" do
 	mode "0755"
 	variables( :hostgrouplist => hostgrouplist)
 end
-#end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
