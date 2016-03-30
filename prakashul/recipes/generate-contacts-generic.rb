@@ -5,7 +5,7 @@ np = gem_package 'nagios_parser' do
 end
 
 #require 'nagios_parser/object/parser'
-chef_gem 'nagios_parser/object/parser'
+chef_gem 'nagios_parser'
 
 
 hgroup_file_path='/etc/nagios3/hostgroup.d/'
